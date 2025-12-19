@@ -417,7 +417,6 @@ function ProjectModal({ onClose, onSave, project }: { onClose: () => void; onSav
                           onChange={(e) => updateGalleryItem(index, "url", e.target.value)}
                           placeholder="https://..."
                           className="w-full bg-white/5 border border-white/10 text-white placeholder-white/20 px-3 py-2 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50"
-                          required
                         />
                       </div>
 
@@ -428,26 +427,24 @@ function ProjectModal({ onClose, onSave, project }: { onClose: () => void; onSav
                       )}
 
                       <div className="space-y-2">
-                        <label className="text-xs text-white/40">Title *</label>
+                        <label className="text-xs text-white/40">Title</label>
                         <input
                           type="text"
                           value={item.title}
                           onChange={(e) => updateGalleryItem(index, "title", e.target.value)}
                           placeholder="e.g. Tower Facade"
                           className="w-full bg-white/5 border border-white/10 text-white placeholder-white/20 px-3 py-2 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50"
-                          required
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-xs text-white/40">Description *</label>
+                        <label className="text-xs text-white/40">Description</label>
                         <textarea
                           value={item.description}
                           onChange={(e) => updateGalleryItem(index, "description", e.target.value)}
                           placeholder="Describe this image..."
                           rows={2}
                           className="w-full bg-white/5 border border-white/10 text-white placeholder-white/20 px-3 py-2 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50 resize-none"
-                          required
                         />
                       </div>
                     </motion.div>
