@@ -14,6 +14,7 @@ async function main() {
   await prisma.service.deleteMany();
   await prisma.teamMember.deleteMany();
   await prisma.contact.deleteMany();
+  await prisma.article.deleteMany();
   await prisma.settings.deleteMany();
   await prisma.user.deleteMany();
 
@@ -333,6 +334,138 @@ async function main() {
       metaTitle: "Wearch Studio - Architecture & Design",
       metaDescription: "Creating architectural excellence in Bandung and beyond. We transform visions into timeless spaces.",
     },
+  });
+
+  // ==================== ARTICLES ====================
+  console.log("📝 Creating articles...");
+
+  await prisma.article.createMany({
+    data: [
+      {
+        title: "The Future of Sustainable Architecture in Indonesia",
+        slug: "future-sustainable-architecture-indonesia",
+        excerpt: "Exploring how Indonesian architects are pioneering eco-friendly design solutions that blend traditional wisdom with modern innovation.",
+        content: `<h2>Embracing Sustainability in Modern Design</h2>
+<p>Indonesia's architectural landscape is undergoing a remarkable transformation. As climate concerns grow and energy costs rise, architects across the archipelago are reimagining how buildings can harmonize with their environment.</p>
+
+<blockquote>Architecture should speak of its time and place, but yearn for timelessness. — Frank Gehry</blockquote>
+
+<h3>Traditional Wisdom Meets Modern Innovation</h3>
+<p>Indonesian vernacular architecture has always been inherently sustainable. From the steep roofs of Minangkabau houses that provide natural cooling to the elevated structures of Dayak longhouses that protect against flooding, our ancestors understood environmental design intuitively.</p>
+
+<p>Today's architects are rediscovering these principles and applying them with modern materials and techniques. The result is a new architectural language that is uniquely Indonesian yet globally relevant.</p>
+
+<h3>Key Trends Shaping the Future</h3>
+<ul>
+<li><strong>Passive Cooling Systems:</strong> Utilizing cross-ventilation and thermal mass to reduce air conditioning dependency</li>
+<li><strong>Local Materials:</strong> Bamboo, reclaimed wood, and volcanic stone are making a comeback</li>
+<li><strong>Green Roofs and Walls:</strong> Vertical gardens that improve air quality and reduce heat islands</li>
+<li><strong>Rainwater Harvesting:</strong> Essential in a tropical climate with abundant rainfall</li>
+</ul>
+
+<h2>Looking Ahead</h2>
+<p>The next decade will be crucial for Indonesian architecture. As urbanization accelerates and climate challenges intensify, the buildings we design today will shape how future generations live, work, and interact with their environment.</p>`,
+        coverImage: "https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=1200&q=80",
+        category: "Sustainability",
+        tags: "sustainable design, green architecture, Indonesia, eco-friendly",
+        author: "Wearch Studio",
+        featured: true,
+        status: "Published",
+        publishedAt: new Date("2024-03-15"),
+        views: 1250,
+      },
+      {
+        title: "Minimalism in Modern Indonesian Homes",
+        slug: "minimalism-modern-indonesian-homes",
+        excerpt: "How the minimalist movement is reshaping residential architecture in Indonesian cities, creating spaces that are both functional and serene.",
+        content: `<h2>The Rise of Minimalist Living</h2>
+<p>In the bustling cities of Indonesia, a quiet revolution is taking place. Homeowners are increasingly drawn to minimalist design—not just as an aesthetic choice, but as a way of life that prioritizes quality over quantity.</p>
+
+<h3>Why Minimalism Works in Indonesia</h3>
+<p>The tropical climate actually complements minimalist design beautifully. Open floor plans allow for better air circulation, while reduced clutter makes spaces feel cooler and more spacious. The philosophy of "less is more" also aligns well with Indonesian values of simplicity and harmony.</p>
+
+<h3>Key Design Principles</h3>
+<ol>
+<li><strong>Clean Lines:</strong> Geometric shapes and uncluttered spaces create visual calm</li>
+<li><strong>Natural Light:</strong> Large windows and strategic openings maximize daylight</li>
+<li><strong>Material Honesty:</strong> Exposed concrete, natural wood, and raw textures</li>
+<li><strong>Indoor-Outdoor Flow:</strong> Seamless transitions between interior and exterior spaces</li>
+</ol>
+
+<blockquote>Simplicity is the ultimate sophistication. — Leonardo da Vinci</blockquote>
+
+<h2>Practical Considerations</h2>
+<p>Implementing minimalist design in Indonesia requires thoughtful adaptation. Considerations like monsoon rains, intense sun exposure, and the need for ventilation must all be addressed without compromising the clean aesthetic.</p>`,
+        coverImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
+        category: "Interior Design",
+        tags: "minimalism, residential design, modern homes, interior design",
+        author: "Wearch Studio",
+        featured: true,
+        status: "Published",
+        publishedAt: new Date("2024-02-28"),
+        views: 890,
+      },
+      {
+        title: "Urban Planning Challenges in Indonesian Megacities",
+        slug: "urban-planning-challenges-indonesian-megacities",
+        excerpt: "Addressing the complex urban planning issues facing Jakarta, Surabaya, and other rapidly growing Indonesian metropolitan areas.",
+        content: `<h2>The Urban Challenge</h2>
+<p>Indonesia's megacities are growing at an unprecedented rate. Jakarta alone is home to over 10 million people, with millions more in the greater metropolitan area. This rapid urbanization brings both opportunities and significant challenges.</p>
+
+<h3>Key Issues Facing Indonesian Cities</h3>
+<p>Traffic congestion, flooding, lack of green space, and informal settlements are just some of the pressing issues urban planners must address. The stakes are high—how we solve these problems will determine the quality of life for millions of people.</p>
+
+<h3>Innovative Solutions</h3>
+<ul>
+<li><strong>Transit-Oriented Development:</strong> Building dense, walkable neighborhoods around MRT and LRT stations</li>
+<li><strong>Flood Mitigation:</strong> Creating water-absorbing landscapes and improving drainage infrastructure</li>
+<li><strong>Mixed-Use Zoning:</strong> Reducing commute times by bringing homes, offices, and amenities closer together</li>
+<li><strong>Public Space Creation:</strong> Reclaiming streets and underutilized land for parks and plazas</li>
+</ul>
+
+<h2>Learning from Global Examples</h2>
+<p>Cities like Singapore, Seoul, and Medellín have successfully transformed their urban landscapes. While every city is unique, there are valuable lessons to be learned and adapted to the Indonesian context.</p>`,
+        coverImage: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1200&q=80",
+        category: "Urban Planning",
+        tags: "urban planning, cities, Jakarta, infrastructure",
+        author: "Wearch Studio",
+        featured: false,
+        status: "Published",
+        publishedAt: new Date("2024-02-10"),
+        views: 654,
+      },
+      {
+        title: "The Art of Tropical Interior Design",
+        slug: "art-tropical-interior-design",
+        excerpt: "Creating comfortable, beautiful interiors that embrace Indonesia's tropical climate rather than fighting against it.",
+        content: `<h2>Designing for the Tropics</h2>
+<p>Tropical interior design is more than just adding palm prints and rattan furniture. It's a holistic approach that considers climate, culture, and comfort to create spaces that feel naturally at home in Indonesia.</p>
+
+<h3>Essential Elements</h3>
+<p>The best tropical interiors share certain characteristics: abundant natural light, excellent ventilation, natural materials, and a strong connection to the outdoors. These elements work together to create spaces that are comfortable year-round without excessive reliance on air conditioning.</p>
+
+<h3>Material Palette</h3>
+<ul>
+<li><strong>Teak and Other Hardwoods:</strong> Durable and beautiful, with natural resistance to tropical conditions</li>
+<li><strong>Bamboo:</strong> Sustainable, versatile, and quintessentially tropical</li>
+<li><strong>Natural Stone:</strong> Cool to the touch and endlessly elegant</li>
+<li><strong>Rattan and Wicker:</strong> Lightweight, breathable, and artisanal</li>
+</ul>
+
+<blockquote>The details are not the details. They make the design. — Charles Eames</blockquote>
+
+<h2>Color and Texture</h2>
+<p>A tropical color palette typically features neutral bases—whites, creams, and natural wood tones—accented with greens, blues, and earth tones inspired by the natural environment.</p>`,
+        coverImage: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
+        category: "Interior Design",
+        tags: "tropical design, interior design, natural materials, Indonesian style",
+        author: "Wearch Studio",
+        featured: false,
+        status: "Published",
+        publishedAt: new Date("2024-01-20"),
+        views: 432,
+      },
+    ],
   });
 
   console.log("✅ Seed completed successfully!");

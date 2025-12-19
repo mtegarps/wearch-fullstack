@@ -19,7 +19,12 @@ export default function Navigation({
   isMenuOpen,
   setIsMenuOpen,
 }: NavigationProps) {
-  const navItems = ["Work", "About", "Contact"];
+  const navItems = [
+    { label: "Work", href: "#work" },
+    { label: "About", href: "#about" },
+    { label: "Articles", href: "/articles" },
+    { label: "Contact", href: "#contact" }
+  ];
 
   return (
     <>
@@ -114,8 +119,8 @@ export default function Navigation({
           <div className="hidden md:flex items-center gap-12">
             {navItems.map((item) => (
               <motion.a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+                key={item.label}
+                href={item.href}
                 whileHover={{ y: -2 }}
                 className="text-sm tracking-[0.1em] uppercase text-gray-600 hover:text-[#c8ff00] transition-colors"
                 style={{
@@ -125,7 +130,7 @@ export default function Navigation({
                   letterSpacing: settings.navLetterSpacing || "0.1em",
                 }}
               >
-                {item}
+                {item.label}
               </motion.a>
             ))}
 
@@ -177,8 +182,8 @@ export default function Navigation({
         <div className="space-y-8 text-center">
           {navItems.map((item, idx) => (
             <motion.a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={item.label}
+              href={item.href}
               initial={{ opacity: 0, y: 20 }}
               animate={{
                 opacity: isMenuOpen ? 1 : 0,
@@ -194,7 +199,7 @@ export default function Navigation({
                   : settings.headingColor,
               }}
             >
-              {item}
+              {item.label}
             </motion.a>
           ))}
 
