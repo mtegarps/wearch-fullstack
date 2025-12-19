@@ -104,25 +104,20 @@ export default function ProjectsPage() {
     if (selectedProject !== null && typeof window !== 'undefined' && (window as any).Swiper) {
       setTimeout(() => {
         new (window as any).Swiper('.swiper-container', {
-          slidesPerView: 1.2,
+          slidesPerView: 'auto',
           spaceBetween: 20,
-          centeredSlides: true,
-          speed: 800,
+          centeredSlides: false,
+          speed: 600,
           loop: false,
           grabCursor: true,
           freeMode: {
             enabled: true,
             momentum: true,
-            momentumRatio: 0.8,
-            momentumVelocityRatio: 0.8,
-            momentumBounce: false,
-            momentumBounceRatio: 0,
-            minimumVelocity: 0.02,
-            sticky: false,
+            momentumRatio: 0.5,
+            momentumVelocityRatio: 0.5,
           },
           resistance: true,
-          resistanceRatio: 0.5,
-          watchSlidesProgress: true,
+          resistanceRatio: 0.85,
           navigation: {
             nextEl: '.swiper-button-next-custom',
             prevEl: '.swiper-button-prev-custom',
@@ -133,25 +128,6 @@ export default function ProjectsPage() {
           mousewheel: {
             forceToAxis: true,
             releaseOnEdges: true,
-            sensitivity: 1,
-          },
-          breakpoints: {
-            320: {
-              slidesPerView: 1.1,
-              spaceBetween: 15,
-            },
-            640: {
-              slidesPerView: 1.15,
-              spaceBetween: 20,
-            },
-            768: {
-              slidesPerView: 1.2,
-              spaceBetween: 25,
-            },
-            1024: {
-              slidesPerView: 1.25,
-              spaceBetween: 30,
-            },
           },
           on: {
             slideChange: function(this: any) {
@@ -453,7 +429,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* Project Detail Modal - Exact same as landing page */}
+      {/* Project Detail Modal */}
       {selectedProject !== null && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -469,7 +445,7 @@ export default function ProjectsPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 bg-black/95 backdrop-blur-xl"
+            className="absolute inset-0 bg-black"
           />
 
           {/* Close Button - Fixed Position */}
@@ -531,7 +507,7 @@ export default function ProjectsPage() {
             </span>
           </motion.div>
 
-          {/* Swiper Container */}
+          {/* Swiper Container - Full Screen */}
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -544,83 +520,21 @@ export default function ProjectsPage() {
             className="relative w-full h-full flex items-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-full h-full py-8 md:py-16">
-              <div className="swiper-container w-full h-full">
-                <div className="swiper-wrapper">
-                  {projects
-                    .find((p) => p.id === selectedProject)
-                    ?.gallery.map((item, idx) => (
-                      <div key={idx} className="swiper-slide">
-                        <div className="w-full h-full flex items-center justify-center">
-                          <div className="max-w-7xl w-full h-full flex flex-col md:flex-row gap-8 items-center px-4">
-                            {/* Image Container */}
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.9 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: 0.2, duration: 0.6 }}
-                              className="relative w-full md:w-2/3 h-[50vh] md:h-[70vh] flex items-center justify-center group"
-                            >
-                              {/* Image Shadow Effect */}
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent blur-2xl scale-95" />
-
-                              <img
-                                src={item.url}
-                                alt={item.title}
-                                className="relative w-full h-full object-contain drop-shadow-2xl"
-                              />
-
-                              {/* Corner Decorations */}
-                              <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-[#BBFF00]/50 transition-all duration-500" />
-                              <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-[#BBFF00]/50 transition-all duration-500" />
-                            </motion.div>
-
-                            {/* Description Panel */}
-                            <motion.div
-                              initial={{ opacity: 0, x: 50 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.4, duration: 0.6 }}
-                              className="w-full md:w-1/3 h-auto space-y-6 text-white"
-                            >
-                              {/* Decorative Line */}
-                              <div className="h-px bg-gradient-to-r from-[#BBFF00] to-transparent" />
-
-                              {/* Title */}
-                              <div>
-                                <p className="text-xs tracking-[0.3em] uppercase mb-3 text-[#BBFF00] opacity-50">
-                                  {String(idx + 1).padStart(2, "0")} — Featured View
-                                </p>
-                                <h3 className="text-2xl md:text-3xl font-light tracking-tight leading-tight mb-4">
-                                  {item.title}
-                                </h3>
-                              </div>
-
-                              {/* Description */}
-                              <p className="text-sm md:text-base leading-relaxed text-white/80">
-                                {item.description}
-                              </p>
-
-                              {/* Decorative Elements */}
-                              <div className="flex items-center gap-4 pt-4">
-                                <div className="w-12 h-px bg-white/30" />
-                                <motion.div
-                                  animate={{
-                                    scale: [1, 1.2, 1],
-                                    opacity: [0.5, 1, 0.5],
-                                  }}
-                                  transition={{
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    ease: "easeInOut",
-                                  }}
-                                  className="w-1.5 h-1.5 bg-[#BBFF00] rounded-full"
-                                />
-                              </div>
-                            </motion.div>
-                          </div>
-                        </div>
+            <div className="swiper-container w-full h-full">
+              <div className="swiper-wrapper items-center">
+                {projects
+                  .find((p) => p.id === selectedProject)
+                  ?.gallery.map((item, idx) => (
+                    <div key={idx} className="swiper-slide !w-auto !h-full flex items-center">
+                      <div className="h-full flex items-center">
+                        <img
+                          src={item.url}
+                          alt={item.title}
+                          className="h-full w-auto max-h-screen object-contain"
+                        />
                       </div>
-                    ))}
-                </div>
+                    </div>
+                  ))}
               </div>
             </div>
 
@@ -657,25 +571,21 @@ export default function ProjectsPage() {
         .swiper-container {
           width: 100%;
           height: 100%;
-          overflow: visible !important;
+          overflow: hidden;
         }
         .swiper-wrapper {
-          align-items: center;
-        }
-        .swiper-slide {
           display: flex;
           align-items: center;
-          justify-content: center;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          opacity: 1;
+          height: 100%;
         }
-        .swiper-slide-active {
-          opacity: 1;
-          z-index: 10;
+        .swiper-slide {
+          flex-shrink: 0;
+          height: 100%;
+          display: flex;
+          align-items: center;
         }
-        .swiper-slide-prev,
-        .swiper-slide-next {
-          opacity: 1;
+        .swiper-slide img {
+          display: block;
         }
         .swiper-button-prev-custom,
         .swiper-button-next-custom {
@@ -684,7 +594,7 @@ export default function ProjectsPage() {
         .swiper-button-prev-custom:hover,
         .swiper-button-next-custom:hover {
           background-color: rgba(187, 255, 0, 0.2);
-          transform: scale(1.1);
+          transform: translateY(-50%) scale(1.1);
         }
       `}</style>
     </div>
