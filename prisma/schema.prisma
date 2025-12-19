@@ -1,0 +1,299 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== USER ====================
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin") // admin, editor
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== PROJECT ====================
+model Project {
+  id          Int              @id @default(autoincrement())
+  title       String
+  location    String
+  year        String
+  image       String?
+  category    String
+  area        String?
+  duration    String?
+  client      String?
+  description String?          @db.Text
+  status      String           @default("Draft") // Draft, Published
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  gallery     ProjectGallery[]
+}
+
+model ProjectGallery {
+  id          Int     @id @default(autoincrement())
+  projectId   Int
+  project     Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url         String
+  title       String
+  description String? @db.Text
+  order       Int     @default(0)
+}
+
+// ==================== TEAM ====================
+model TeamMember {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  specialty String?
+  image     String?
+  email     String?
+  phone     String?
+  linkedin  String?
+  instagram String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== SERVICE ====================
+model Service {
+  id          Int           @id @default(autoincrement())
+  title       String
+  icon        String        @default("▲")
+  description String?       @db.Text
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  items       ServiceItem[]
+}
+
+model ServiceItem {
+  id        Int     @id @default(autoincrement())
+  serviceId Int
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  name      String
+  order     Int     @default(0)
+}
+
+// ==================== CONTACT ====================
+model Contact {
+  id           Int     @id @default(autoincrement())
+  email        String?
+  phone        String?
+  address      String?
+  fullAddress  String? @db.Text
+  workingHours String?
+  mapEmbed     String? @db.Text
+  instagram    String?
+  linkedin     String?
+  facebook     String?
+  twitter      String?
+}
+
+// ==================== SETTINGS ====================
+model Settings {
+  id                Int     @id @default(autoincrement())
+  // Branding
+  siteName          String  @default("Wearch Studio")
+  tagline           String?
+  established       String?
+  logoUrl           String?
+  logoWidth         Int     @default(40)
+  logoHeight        Int     @default(40)
+  faviconUrl        String?
+  
+  // Typography - Headings
+  headingFont       String  @default("system-ui")
+  headingWeight     String  @default("300")
+  headingColor      String  @default("#242222")
+  headingColorDark  String  @default("#FFFFFF")
+  // Typography - Body
+  bodyFont          String  @default("system-ui")
+  bodyWeight        String  @default("400")
+  bodySize          String  @default("16px")
+  bodyColor         String  @default("#242222")
+  bodyColorDark     String  @default("#FFFFFF")
+  // Typography - Nav
+  navFont           String  @default("system-ui")
+  navWeight         String  @default("500")
+  navSize           String  @default("12px")
+  navLetterSpacing  String  @default("0.1em")
+  
+  // ========== HERO SECTION ==========
+  heroTitle         String?
+  heroSubtitle      String? @db.Text
+  heroButtonText    String?
+  heroTitleSize     String  @default("8xl")
+  heroSubtitleSize  String  @default("lg")
+  // Hero Typography
+  heroTitleFont     String  @default("system-ui")
+  heroTitleWeight   String  @default("300")
+  heroTitleColor    String  @default("#FFFFFF")
+  heroSubtitleFont  String  @default("system-ui")
+  heroSubtitleWeight String @default("400")
+  heroSubtitleColor String  @default("#FFFFFF")
+  heroTaglineFont   String  @default("system-ui")
+  heroTaglineColor  String  @default("#FFFFFF")
+  // Hero Background
+  heroBgType        String  @default("color") // color, image, video
+  heroBgColor       String  @default("#242222")
+  heroBgImage       String?
+  heroBgVideo       String?
+  heroBgOverlay     Boolean @default(true)
+  heroBgOverlayColor String @default("#000000")
+  heroBgOverlayOpacity Float @default(0.5)
+  // Hero Layout
+  heroLayout        String  @default("center") // center, left, right, split
+  heroHeight        String  @default("100vh") // 100vh, 90vh, 80vh, 70vh
+  heroContentWidth  String  @default("max-w-5xl")
+  // Hero Effects
+  heroParallax      Boolean @default(false)
+  heroScrollIndicator Boolean @default(true)
+  
+  // ========== NAVIGATION ==========
+  navStyle          String  @default("blur") // transparent, solid, blur
+  navPosition       String  @default("fixed") // fixed, sticky, static
+  navAlignment      String  @default("between") // between, left, center, right
+  navHeight         String  @default("80px")
+  navBgColor        String  @default("#FFFFFF")
+  navBgOpacity      Float   @default(0.9)
+  navHideOnScroll   Boolean @default(false)
+  navShowLogo       Boolean @default(true)
+  // Mobile Nav
+  mobileMenuStyle   String  @default("slide") // slide, overlay, dropdown
+  mobileLogo        String?
+  mobileLogoWidth   Int     @default(32)
+  mobileLogoHeight  Int     @default(32)
+  
+  // ========== SECTIONS VISIBILITY ==========
+  showHeroSection   Boolean @default(true)
+  showAboutSection  Boolean @default(true)
+  showProjectsSection Boolean @default(true)
+  showTeamSection   Boolean @default(true)
+  showServicesSection Boolean @default(true)
+  showContactSection Boolean @default(true)
+  // Section Order (comma-separated)
+  sectionOrder      String  @default("hero,about,projects,team,services,contact")
+  
+  // ========== SECTION STYLING ==========
+  sectionPadding    String  @default("py-24") // py-16, py-24, py-32
+  sectionAnimation  String  @default("fade") // none, fade, slide, zoom
+  
+  // About Section
+  aboutSectionTitle String?
+  aboutSectionSubtitle String? @db.Text
+  aboutQuote        String? @db.Text
+  aboutQuoteAuthor  String?
+  aboutDescription1 String? @db.Text
+  aboutDescription2 String? @db.Text
+  aboutBgType       String  @default("color")
+  aboutBgColor      String?
+  aboutBgImage      String?
+  
+  // Stats
+  projectsCompleted String?
+  projectsLabel     String?
+  projectsDesc      String?
+  yearsExperience   String?
+  yearsLabel        String?
+  yearsDesc         String?
+  awardsWon         String?
+  awardsLabel       String?
+  awardsDesc        String?
+  
+  // ========== PROJECT CARDS ==========
+  projectCardStyle  String  @default("overlay") // minimal, detailed, overlay
+  projectGridCols   Int     @default(3) // 2, 3, 4
+  projectAspectRatio String @default("4/3") // 1/1, 4/3, 16/9, 3/2
+  projectHoverEffect String @default("zoom") // none, zoom, slide, fade
+  projectShowInfo   Boolean @default(true)
+  projectShowCategory Boolean @default(true)
+  projectShowYear   Boolean @default(true)
+  
+  // Team Section
+  teamSectionTitle  String?
+  teamSectionSubtitle String?
+  teamLayout        String  @default("grid") // grid, carousel, list
+  teamCardStyle     String  @default("photo") // photo, info, minimal
+  teamShowSocial    Boolean @default(true)
+  teamShowContact   Boolean @default(false)
+  teamGridCols      Int     @default(3)
+  
+  // Services Section
+  servicesSectionTitle String?
+  servicesSectionSubtitle String? @db.Text
+  serviceCardStyle  String  @default("icon") // icon, minimal, detailed
+  serviceIconStyle  String  @default("filled") // filled, outlined, duotone
+  
+  // Contact Section
+  contactSectionTitle String?
+  contactSectionSubtitle String? @db.Text
+  contactCTA        String? @db.Text
+  contactButtonText String?
+  
+  // Footer
+  footerDescription String? @db.Text
+  copyrightText     String?
+  
+  // ========== COLORS ==========
+  primaryColor      String  @default("#BBFF00")
+  secondaryColor    String  @default("#c8ff00")
+  accentColor       String  @default("#BBFF00")
+  darkBg            String  @default("#242222")
+  lightBg           String  @default("#F5F5F5")
+  darkText          String  @default("#242222")
+  lightText         String  @default("#FFFFFF")
+  mutedText         String  @default("#B8B8B8")
+  
+  // ========== BUTTONS ==========
+  buttonBg          String  @default("#BBFF00")
+  buttonText        String  @default("#242222")
+  buttonHoverBg     String  @default("#242222")
+  buttonHoverText   String  @default("#BBFF00")
+  buttonRadius      String  @default("0px")
+  
+  // ========== EFFECTS ==========
+  enableGrain       Boolean @default(true)
+  enableCursor      Boolean @default(true)
+  enableAnimations  Boolean @default(true)
+  
+  // ========== MOBILE SETTINGS ==========
+  mobileFontScale   Float   @default(1.0)
+  mobileDisableAnimations Boolean @default(false)
+  mobileTouchFriendly Boolean @default(true)
+  
+  // ========== ACCESSIBILITY ==========
+  enableHighContrast Boolean @default(false)
+  fontSizeMultiplier Float  @default(1.0)
+  enableReduceMotion Boolean @default(false)
+  focusIndicatorColor String @default("#BBFF00")
+  
+  // ========== GALLERY/PORTFOLIO ==========
+  galleryLightboxStyle String @default("modern") // modern, classic, minimal
+  galleryFilterAnimation String @default("fade") // fade, slide, none
+  galleryLayout     String  @default("grid") // grid, masonry
+  galleryPagination String  @default("pagination") // pagination, infinite, loadmore
+  galleryItemsPerPage Int   @default(9)
+  
+  // ========== MAINTENANCE MODE ==========
+  maintenanceMode   Boolean @default(false)
+  maintenanceTitle  String  @default("We'll Be Back Soon")
+  maintenanceMessage String? @db.Text
+  maintenanceEndDate DateTime?
+  maintenanceAllowAdmin Boolean @default(true)
+  maintenanceBgImage String?
+  
+  // ========== SEO ==========
+  metaTitle         String?
+  metaDescription   String? @db.Text
+}

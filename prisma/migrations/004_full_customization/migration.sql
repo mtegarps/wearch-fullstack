@@ -1,0 +1,105 @@
+-- Full customization migration
+
+-- Hero Background
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroBgType" TEXT DEFAULT 'color';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroBgColor" TEXT DEFAULT '#242222';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroBgImage" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroBgVideo" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroBgOverlay" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroBgOverlayColor" TEXT DEFAULT '#000000';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroBgOverlayOpacity" FLOAT DEFAULT 0.5;
+
+-- Hero Layout
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroLayout" TEXT DEFAULT 'center';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroHeight" TEXT DEFAULT '100vh';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroContentWidth" TEXT DEFAULT 'max-w-5xl';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroParallax" BOOLEAN DEFAULT false;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroScrollIndicator" BOOLEAN DEFAULT true;
+
+-- Navigation
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "navStyle" TEXT DEFAULT 'blur';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "navPosition" TEXT DEFAULT 'fixed';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "navAlignment" TEXT DEFAULT 'between';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "navHeight" TEXT DEFAULT '80px';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "navBgColor" TEXT DEFAULT '#FFFFFF';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "navBgOpacity" FLOAT DEFAULT 0.9;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "navHideOnScroll" BOOLEAN DEFAULT false;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "navShowLogo" BOOLEAN DEFAULT true;
+
+-- Mobile Nav
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "mobileMenuStyle" TEXT DEFAULT 'slide';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "mobileLogo" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "mobileLogoWidth" INTEGER DEFAULT 32;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "mobileLogoHeight" INTEGER DEFAULT 32;
+
+-- Section Visibility
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "showHeroSection" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "showAboutSection" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "showProjectsSection" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "showTeamSection" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "showServicesSection" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "showContactSection" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "sectionOrder" TEXT DEFAULT 'hero,about,projects,team,services,contact';
+
+-- Section Styling
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "sectionPadding" TEXT DEFAULT 'py-24';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "sectionAnimation" TEXT DEFAULT 'fade';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "aboutBgType" TEXT DEFAULT 'color';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "aboutBgColor" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "aboutBgImage" TEXT;
+
+-- Project Cards
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectCardStyle" TEXT DEFAULT 'overlay';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectGridCols" INTEGER DEFAULT 3;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectAspectRatio" TEXT DEFAULT '4/3';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectHoverEffect" TEXT DEFAULT 'zoom';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectShowInfo" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectShowCategory" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectShowYear" BOOLEAN DEFAULT true;
+
+-- Team
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "teamLayout" TEXT DEFAULT 'grid';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "teamCardStyle" TEXT DEFAULT 'photo';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "teamShowSocial" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "teamShowContact" BOOLEAN DEFAULT false;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "teamGridCols" INTEGER DEFAULT 3;
+
+-- Services
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "serviceCardStyle" TEXT DEFAULT 'icon';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "serviceIconStyle" TEXT DEFAULT 'filled';
+
+-- Mobile
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "mobileFontScale" FLOAT DEFAULT 1.0;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "mobileDisableAnimations" BOOLEAN DEFAULT false;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "mobileTouchFriendly" BOOLEAN DEFAULT true;
+
+-- Accessibility
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "enableHighContrast" BOOLEAN DEFAULT false;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "fontSizeMultiplier" FLOAT DEFAULT 1.0;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "enableReduceMotion" BOOLEAN DEFAULT false;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "focusIndicatorColor" TEXT DEFAULT '#BBFF00';
+
+-- Gallery
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "galleryLightboxStyle" TEXT DEFAULT 'modern';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "galleryFilterAnimation" TEXT DEFAULT 'fade';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "galleryLayout" TEXT DEFAULT 'grid';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "galleryPagination" TEXT DEFAULT 'pagination';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "galleryItemsPerPage" INTEGER DEFAULT 9;
+
+-- Maintenance
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "maintenanceMode" BOOLEAN DEFAULT false;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "maintenanceTitle" TEXT DEFAULT 'We''ll Be Back Soon';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "maintenanceMessage" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "maintenanceEndDate" TIMESTAMP;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "maintenanceAllowAdmin" BOOLEAN DEFAULT true;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "maintenanceBgImage" TEXT;
+
+-- Hero Typography Settings
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroTitleFont" TEXT DEFAULT 'system-ui';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroTitleWeight" TEXT DEFAULT '300';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroTitleColor" TEXT DEFAULT '#FFFFFF';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroSubtitleFont" TEXT DEFAULT 'system-ui';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroSubtitleWeight" TEXT DEFAULT '400';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroSubtitleColor" TEXT DEFAULT '#FFFFFF';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroTaglineFont" TEXT DEFAULT 'system-ui';
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "heroTaglineColor" TEXT DEFAULT '#FFFFFF';

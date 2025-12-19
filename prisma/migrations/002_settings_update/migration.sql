@@ -1,0 +1,19 @@
+-- Add new columns to Settings table
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "aboutSectionTitle" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "aboutSectionSubtitle" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectsLabel" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "projectsDesc" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "yearsLabel" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "yearsDesc" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "awardsLabel" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "awardsDesc" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "teamSectionTitle" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "teamSectionSubtitle" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "servicesSectionTitle" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "servicesSectionSubtitle" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "contactSectionTitle" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "contactSectionSubtitle" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "contactCTA" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "contactButtonText" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "footerDescription" TEXT;
+ALTER TABLE "Settings" ADD COLUMN IF NOT EXISTS "copyrightText" TEXT;
