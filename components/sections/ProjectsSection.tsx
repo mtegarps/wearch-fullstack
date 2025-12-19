@@ -30,10 +30,10 @@ function ProjectItem({ project, index, onProjectClick, settings }: ProjectItemPr
     offset: ["start end", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.9]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const rotate = useTransform(scrollYProgress, [0, 1], [5, -5]);
+const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.88, 1, 1, 0.95]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.4]);
+  const blur = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [10, 0, 0, 5]);
   const imageScale = useSpring(isHovered ? 1.08 : 1, { stiffness: 300, damping: 30 });
 
   return (
@@ -135,7 +135,7 @@ function ProjectItem({ project, index, onProjectClick, settings }: ProjectItemPr
         </motion.div>
 
         {/* Image */}
-        <motion.div ref={imageRef} className="md:col-span-7 relative" style={{ scale, opacity, rotate }}>
+        <motion.div ref={imageRef} className="md:col-span-7 relative" style={{ scale, opacity }}>
           <div className="relative">
             <motion.div
               className="absolute inset-0 bg-black/5 blur-2xl"
