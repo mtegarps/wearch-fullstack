@@ -29,7 +29,7 @@ export function Footer({ isDark, contact, settings }: FooterProps) {
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-1">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-6">
-              <Logo isDark={isDark} />
+              <Logo variant={isDark ? "dark" : "light"} />
             </motion.div>
             <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 0.6, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-sm leading-relaxed mb-6">
               {settings?.tagline || "Architecture Studio · Bandung"}
