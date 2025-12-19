@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { 
   Save, Globe, Palette, Type, Image, FileText, Users, Briefcase, Mail, LayoutGrid, 
@@ -119,17 +119,218 @@ const GRID_COLS = [2, 3, 4, 5, 6];
 const ASPECT_RATIOS = ["1/1", "4/3", "3/2", "16/9", "2/1", "3/4"];
 const NAV_HEIGHTS = ["60px", "70px", "80px", "90px", "100px"];
 
+// Separate Input Component to prevent re-renders
+const InputField = ({ label, value, field, placeholder, textarea, onChange }: {
+  label: string;
+  value: string;
+  field: string;
+  placeholder?: string;
+  textarea?: boolean;
+  onChange: (field: string, value: string) => void;
+}) => {
+  return (
+    <div className="space-y-2">
+      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
+      {textarea ? (
+        <textarea 
+          value={value ?? ""} 
+          onChange={(e) => onChange(field, e.target.value)} 
+          placeholder={placeholder}
+          className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50 min-h-[100px] resize-none" 
+        />
+      ) : (
+        <input 
+          type="text" 
+          value={value ?? ""} 
+          onChange={(e) => onChange(field, e.target.value)} 
+          placeholder={placeholder}
+          className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50" 
+        />
+      )}
+    </div>
+  );
+};
+
+// Separate Select Component
+const SelectField = ({ label, value, field, options, onChange }: {
+  label: string;
+  value: string;
+  field: string;
+  options: Array<{ value: string; label: string } | string>;
+  onChange: (field: string, value: string) => void;
+}) => (
+  <div className="space-y-2">
+    <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
+    <select 
+      value={value ?? ""} 
+      onChange={(e) => onChange(field, e.target.value)}
+      className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50 appearance-none"
+    >
+      {options.map((opt: any, idx: number) => (
+        <option key={`opt-${idx}`} value={opt.value ?? opt} className="bg-[#242222]">
+          {opt.label ?? opt}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+// Separate Font Select Component with its own search state
+const FontSelectField = ({ label, value, field, onChange }: {
+  label: string;
+  value: string;
+  field: string;
+  onChange: (field: string, value: string) => void;
+}) => {
+  const [localSearch, setLocalSearch] = useState("");
+  
+  const filteredFonts = useMemo(() => {
+    return FONT_OPTIONS.filter(f => 
+      f.label.toLowerCase().includes(localSearch.toLowerCase())
+    );
+  }, [localSearch]);
+
+  return (
+    <div className="space-y-2">
+      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
+      <input 
+        type="text" 
+        placeholder="Search fonts..." 
+        value={localSearch} 
+        onChange={(e) => setLocalSearch(e.target.value)}
+        className="w-full bg-white/5 border border-white/10 text-white px-4 py-2 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50 mb-2" 
+      />
+      <select 
+        value={value ?? ""} 
+        onChange={(e) => onChange(field, e.target.value)} 
+        size={8}
+        className="w-full bg-white/5 border border-white/10 text-white px-4 py-2 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50"
+      >
+        {filteredFonts.map((opt) => (
+          <option key={opt.id} value={opt.value} className="bg-[#242222] py-1">{opt.label}</option>
+        ))}
+      </select>
+      <p className="text-white/30 text-xs">{filteredFonts.length} fonts available</p>
+    </div>
+  );
+};
+
+// Color Field Component
+const ColorField = ({ label, value, field, onChange }: {
+  label: string;
+  value: string;
+  field: string;
+  onChange: (field: string, value: string) => void;
+}) => (
+  <div className="space-y-2">
+    <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
+    <div className="flex gap-3">
+      <input 
+        type="color" 
+        value={value || "#000000"} 
+        onChange={(e) => onChange(field, e.target.value)} 
+        className="w-12 h-12 rounded-lg bg-transparent cursor-pointer border border-white/10" 
+      />
+      <input 
+        type="text" 
+        value={value || ""} 
+        onChange={(e) => onChange(field, e.target.value)}
+        className="flex-1 bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50" 
+      />
+    </div>
+  </div>
+);
+
+// Toggle Field Component
+const ToggleField = ({ label, value, field, description, onChange }: {
+  label: string;
+  value: boolean;
+  field: string;
+  description?: string;
+  onChange: (field: string, value: boolean) => void;
+}) => (
+  <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
+    <div>
+      <p className="text-white text-sm">{label}</p>
+      {description && <p className="text-white/40 text-xs mt-1">{description}</p>}
+    </div>
+    <button 
+      type="button" 
+      onClick={() => onChange(field, !value)}
+      className={`w-12 h-6 rounded-full transition-all relative ${value ? "bg-[#BBFF00]" : "bg-white/20"}`}
+    >
+      <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${value ? "left-7" : "left-1"}`} />
+    </button>
+  </div>
+);
+
+// Slider Field Component
+const SliderField = ({ label, value, field, min, max, step, onChange }: {
+  label: string;
+  value: number;
+  field: string;
+  min: number;
+  max: number;
+  step: number;
+  onChange: (field: string, value: number) => void;
+}) => (
+  <div className="space-y-2">
+    <div className="flex justify-between">
+      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
+      <span className="text-[#BBFF00] text-sm">{value}</span>
+    </div>
+    <input 
+      type="range" 
+      min={min} 
+      max={max} 
+      step={step} 
+      value={value ?? 1} 
+      onChange={(e) => onChange(field, parseFloat(e.target.value))}
+      className="w-full accent-[#BBFF00]" 
+    />
+  </div>
+);
+
+// Image Upload Component
+const ImageUpload = ({ label, value, field, onUpload, uploading }: {
+  label: string;
+  value: string;
+  field: string;
+  onUpload: (file: File, field: string) => void;
+  uploading: boolean;
+}) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  return (
+    <div className="space-y-2">
+      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
+      <div className="flex gap-4 items-center">
+        {value && <img src={value} alt="Preview" className="w-16 h-16 object-contain bg-white/5 rounded-lg" />}
+        <button 
+          onClick={() => inputRef.current?.click()} 
+          disabled={uploading}
+          className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg flex items-center gap-2"
+        >
+          <Upload size={16} />{uploading ? "Uploading..." : "Upload"}
+        </button>
+        <input 
+          ref={inputRef} 
+          type="file" 
+          accept="image/*" 
+          className="hidden" 
+          onChange={(e) => e.target.files?.[0] && onUpload(e.target.files[0], field)} 
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState("branding");
   const [uploading, setUploading] = useState(false);
-  const [fontSearch, setFontSearch] = useState("");
-  const logoInputRef = useRef<HTMLInputElement>(null);
-  const faviconInputRef = useRef<HTMLInputElement>(null);
-  const heroImageRef = useRef<HTMLInputElement>(null);
-  const heroVideoRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState<any>({
     siteName: "", tagline: "", established: "",
@@ -184,6 +385,11 @@ export default function SettingsPage() {
     }).catch(() => setLoading(false));
   }, []);
 
+  // Use useCallback to prevent recreation of handler functions
+  const handleFieldChange = useCallback((field: string, value: string | number | boolean) => {
+    setFormData((prev: any) => ({ ...prev, [field]: value }));
+  }, []);
+
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -205,14 +411,10 @@ export default function SettingsPage() {
     try {
       const res = await fetch("/api/upload", { method: "POST", body: formDataUpload });
       const data = await res.json();
-      if (data.url) setFormData({ ...formData, [field]: data.url });
+      if (data.url) handleFieldChange(field, data.url);
     } catch (e) { console.error(e); }
     setUploading(false);
   };
-
-  const filteredFonts = FONT_OPTIONS.filter(f => 
-    f.label.toLowerCase().includes(fontSearch.toLowerCase())
-  );
 
   if (loading) return (
     <div className="min-h-screen bg-[#1a1a1a] flex items-center justify-center">
@@ -235,96 +437,6 @@ export default function SettingsPage() {
     { id: "maintenance", label: "Maintenance", icon: AlertTriangle },
     { id: "seo", label: "SEO", icon: FileText },
   ];
-
-  // Components
-  const InputField = ({ label, value, field, placeholder, textarea }: any) => (
-    <div className="space-y-2">
-      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
-      {textarea ? (
-        <textarea value={value ?? ""} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })} placeholder={placeholder}
-          className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50 min-h-[100px] resize-none" />
-      ) : (
-        <input type="text" value={value ?? ""} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })} placeholder={placeholder}
-          className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50" />
-      )}
-    </div>
-  );
-
-  const SelectField = ({ label, value, field, options }: any) => (
-    <div className="space-y-2">
-      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
-      <select value={value ?? ""} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-        className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50 appearance-none">
-        {options.map((opt: any, idx: number) => (
-          <option key={`opt-${idx}`} value={opt.value ?? opt} className="bg-[#242222]">{opt.label ?? opt}</option>
-        ))}
-      </select>
-    </div>
-  );
-
-  const FontSelectField = ({ label, value, field }: any) => (
-    <div className="space-y-2">
-      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
-      <input type="text" placeholder="Search fonts..." value={fontSearch} onChange={(e) => setFontSearch(e.target.value)}
-        className="w-full bg-white/5 border border-white/10 text-white px-4 py-2 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50 mb-2" />
-      <select value={value ?? ""} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })} size={8}
-        className="w-full bg-white/5 border border-white/10 text-white px-4 py-2 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50">
-        {filteredFonts.map((opt) => (
-          <option key={opt.id} value={opt.value} className="bg-[#242222] py-1">{opt.label}</option>
-        ))}
-      </select>
-      <p className="text-white/30 text-xs">{filteredFonts.length} fonts available</p>
-    </div>
-  );
-
-  const ColorField = ({ label, value, field }: any) => (
-    <div className="space-y-2">
-      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
-      <div className="flex gap-3">
-        <input type="color" value={value || "#000000"} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })} className="w-12 h-12 rounded-lg bg-transparent cursor-pointer border border-white/10" />
-        <input type="text" value={value || ""} onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-          className="flex-1 bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50" />
-      </div>
-    </div>
-  );
-
-  const ToggleField = ({ label, value, field, description }: any) => (
-    <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg">
-      <div>
-        <p className="text-white text-sm">{label}</p>
-        {description && <p className="text-white/40 text-xs mt-1">{description}</p>}
-      </div>
-      <button type="button" onClick={() => setFormData({ ...formData, [field]: !value })}
-        className={`w-12 h-6 rounded-full transition-all relative ${value ? "bg-[#BBFF00]" : "bg-white/20"}`}>
-        <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${value ? "left-7" : "left-1"}`} />
-      </button>
-    </div>
-  );
-
-  const SliderField = ({ label, value, field, min, max, step }: any) => (
-    <div className="space-y-2">
-      <div className="flex justify-between">
-        <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
-        <span className="text-[#BBFF00] text-sm">{value}</span>
-      </div>
-      <input type="range" min={min} max={max} step={step} value={value ?? 1} onChange={(e) => setFormData({ ...formData, [field]: parseFloat(e.target.value) })}
-        className="w-full accent-[#BBFF00]" />
-    </div>
-  );
-
-  const ImageUpload = ({ label, value, field, inputRef }: any) => (
-    <div className="space-y-2">
-      <label className="text-xs tracking-[0.15em] uppercase text-white/40">{label}</label>
-      <div className="flex gap-4 items-center">
-        {value && <img src={value} alt="Preview" className="w-16 h-16 object-contain bg-white/5 rounded-lg" />}
-        <button onClick={() => inputRef?.current?.click()} disabled={uploading}
-          className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-sm rounded-lg flex items-center gap-2">
-          <Upload size={16} />{uploading ? "Uploading..." : "Upload"}
-        </button>
-        <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && handleUpload(e.target.files[0], field)} />
-      </div>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white">
@@ -363,22 +475,22 @@ export default function SettingsPage() {
           {activeTab === "branding" && (
             <div className="space-y-8">
               <div className="grid grid-cols-2 gap-6">
-                <InputField label="Site Name" value={formData.siteName} field="siteName" placeholder="Your Site Name" />
-                <InputField label="Established Year" value={formData.established} field="established" placeholder="2018" />
+                <InputField label="Site Name" value={formData.siteName} field="siteName" placeholder="Your Site Name" onChange={handleFieldChange} />
+                <InputField label="Established Year" value={formData.established} field="established" placeholder="2018" onChange={handleFieldChange} />
               </div>
-              <InputField label="Tagline" value={formData.tagline} field="tagline" placeholder="Your tagline here" />
+              <InputField label="Tagline" value={formData.tagline} field="tagline" placeholder="Your tagline here" onChange={handleFieldChange} />
               <div className="grid grid-cols-2 gap-6">
-                <ImageUpload label="Logo" value={formData.logoUrl} field="logoUrl" inputRef={logoInputRef} />
-                <ImageUpload label="Favicon" value={formData.faviconUrl} field="faviconUrl" inputRef={faviconInputRef} />
+                <ImageUpload label="Logo" value={formData.logoUrl} field="logoUrl" onUpload={handleUpload} uploading={uploading} />
+                <ImageUpload label="Favicon" value={formData.faviconUrl} field="faviconUrl" onUpload={handleUpload} uploading={uploading} />
               </div>
               {formData.logoUrl && (
                 <div className="grid grid-cols-2 gap-6">
-                  <InputField label="Logo Width (px)" value={formData.logoWidth} field="logoWidth" />
-                  <InputField label="Logo Height (px)" value={formData.logoHeight} field="logoHeight" />
+                  <InputField label="Logo Width (px)" value={formData.logoWidth} field="logoWidth" onChange={handleFieldChange} />
+                  <InputField label="Logo Height (px)" value={formData.logoHeight} field="logoHeight" onChange={handleFieldChange} />
                 </div>
               )}
-              <InputField label="Footer Description" value={formData.footerDescription} field="footerDescription" textarea />
-              <InputField label="Copyright Text" value={formData.copyrightText} field="copyrightText" placeholder="© 2024 Your Company" />
+              <InputField label="Footer Description" value={formData.footerDescription} field="footerDescription" textarea onChange={handleFieldChange} />
+              <InputField label="Copyright Text" value={formData.copyrightText} field="copyrightText" placeholder="© 2024 Your Company" onChange={handleFieldChange} />
             </div>
           )}
 
@@ -387,12 +499,12 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Heading Typography</h3>
-                <FontSelectField label="Font Family" value={formData.headingFont} field="headingFont" />
+                <FontSelectField label="Font Family" value={formData.headingFont} field="headingFont" onChange={handleFieldChange} />
                 <div className="grid grid-cols-2 gap-6">
-                  <SelectField label="Font Weight" value={formData.headingWeight} field="headingWeight" options={FONT_WEIGHTS} />
-                  <ColorField label="Light Mode Color" value={formData.headingColor} field="headingColor" />
+                  <SelectField label="Font Weight" value={formData.headingWeight} field="headingWeight" options={FONT_WEIGHTS} onChange={handleFieldChange} />
+                  <ColorField label="Light Mode Color" value={formData.headingColor} field="headingColor" onChange={handleFieldChange} />
                 </div>
-                <ColorField label="Dark Mode Color" value={formData.headingColorDark} field="headingColorDark" />
+                <ColorField label="Dark Mode Color" value={formData.headingColorDark} field="headingColorDark" onChange={handleFieldChange} />
                 <div className="p-4 bg-white/5 rounded-lg">
                   <p className="text-white/40 text-xs mb-2">Preview</p>
                   <h2 style={{ fontFamily: formData.headingFont, fontWeight: formData.headingWeight, color: formData.headingColorDark }} className="text-3xl">
@@ -403,21 +515,21 @@ export default function SettingsPage() {
 
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Body Typography</h3>
-                <FontSelectField label="Font Family" value={formData.bodyFont} field="bodyFont" />
+                <FontSelectField label="Font Family" value={formData.bodyFont} field="bodyFont" onChange={handleFieldChange} />
                 <div className="grid grid-cols-3 gap-6">
-                  <SelectField label="Font Weight" value={formData.bodyWeight} field="bodyWeight" options={FONT_WEIGHTS} />
-                  <SelectField label="Font Size" value={formData.bodySize} field="bodySize" options={FONT_SIZES} />
-                  <ColorField label="Light Mode" value={formData.bodyColor} field="bodyColor" />
+                  <SelectField label="Font Weight" value={formData.bodyWeight} field="bodyWeight" options={FONT_WEIGHTS} onChange={handleFieldChange} />
+                  <SelectField label="Font Size" value={formData.bodySize} field="bodySize" options={FONT_SIZES} onChange={handleFieldChange} />
+                  <ColorField label="Light Mode" value={formData.bodyColor} field="bodyColor" onChange={handleFieldChange} />
                 </div>
-                <ColorField label="Dark Mode Color" value={formData.bodyColorDark} field="bodyColorDark" />
+                <ColorField label="Dark Mode Color" value={formData.bodyColorDark} field="bodyColorDark" onChange={handleFieldChange} />
               </div>
 
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Navigation Typography</h3>
                 <div className="grid grid-cols-3 gap-6">
-                  <SelectField label="Font Weight" value={formData.navWeight} field="navWeight" options={FONT_WEIGHTS} />
-                  <SelectField label="Font Size" value={formData.navSize} field="navSize" options={FONT_SIZES} />
-                  <SelectField label="Letter Spacing" value={formData.navLetterSpacing} field="navLetterSpacing" options={LETTER_SPACINGS} />
+                  <SelectField label="Font Weight" value={formData.navWeight} field="navWeight" options={FONT_WEIGHTS} onChange={handleFieldChange} />
+                  <SelectField label="Font Size" value={formData.navSize} field="navSize" options={FONT_SIZES} onChange={handleFieldChange} />
+                  <SelectField label="Letter Spacing" value={formData.navLetterSpacing} field="navLetterSpacing" options={LETTER_SPACINGS} onChange={handleFieldChange} />
                 </div>
               </div>
             </div>
@@ -429,35 +541,35 @@ export default function SettingsPage() {
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Brand Colors</h3>
                 <div className="grid grid-cols-3 gap-6">
-                  <ColorField label="Primary" value={formData.primaryColor} field="primaryColor" />
-                  <ColorField label="Secondary" value={formData.secondaryColor} field="secondaryColor" />
-                  <ColorField label="Accent" value={formData.accentColor} field="accentColor" />
+                  <ColorField label="Primary" value={formData.primaryColor} field="primaryColor" onChange={handleFieldChange} />
+                  <ColorField label="Secondary" value={formData.secondaryColor} field="secondaryColor" onChange={handleFieldChange} />
+                  <ColorField label="Accent" value={formData.accentColor} field="accentColor" onChange={handleFieldChange} />
                 </div>
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Background Colors</h3>
                 <div className="grid grid-cols-2 gap-6">
-                  <ColorField label="Dark Background" value={formData.darkBg} field="darkBg" />
-                  <ColorField label="Light Background" value={formData.lightBg} field="lightBg" />
+                  <ColorField label="Dark Background" value={formData.darkBg} field="darkBg" onChange={handleFieldChange} />
+                  <ColorField label="Light Background" value={formData.lightBg} field="lightBg" onChange={handleFieldChange} />
                 </div>
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Text Colors</h3>
                 <div className="grid grid-cols-3 gap-6">
-                  <ColorField label="Dark Text" value={formData.darkText} field="darkText" />
-                  <ColorField label="Light Text" value={formData.lightText} field="lightText" />
-                  <ColorField label="Muted Text" value={formData.mutedText} field="mutedText" />
+                  <ColorField label="Dark Text" value={formData.darkText} field="darkText" onChange={handleFieldChange} />
+                  <ColorField label="Light Text" value={formData.lightText} field="lightText" onChange={handleFieldChange} />
+                  <ColorField label="Muted Text" value={formData.mutedText} field="mutedText" onChange={handleFieldChange} />
                 </div>
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Button Styles</h3>
                 <div className="grid grid-cols-2 gap-6">
-                  <ColorField label="Button Background" value={formData.buttonBg} field="buttonBg" />
-                  <ColorField label="Button Text" value={formData.buttonText} field="buttonText" />
-                  <ColorField label="Hover Background" value={formData.buttonHoverBg} field="buttonHoverBg" />
-                  <ColorField label="Hover Text" value={formData.buttonHoverText} field="buttonHoverText" />
+                  <ColorField label="Button Background" value={formData.buttonBg} field="buttonBg" onChange={handleFieldChange} />
+                  <ColorField label="Button Text" value={formData.buttonText} field="buttonText" onChange={handleFieldChange} />
+                  <ColorField label="Hover Background" value={formData.buttonHoverBg} field="buttonHoverBg" onChange={handleFieldChange} />
+                  <ColorField label="Hover Text" value={formData.buttonHoverText} field="buttonHoverText" onChange={handleFieldChange} />
                 </div>
-                <SelectField label="Button Border Radius" value={formData.buttonRadius} field="buttonRadius" options={BORDER_RADIUS} />
+                <SelectField label="Button Border Radius" value={formData.buttonRadius} field="buttonRadius" options={BORDER_RADIUS} onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -467,12 +579,12 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Hero Content</h3>
-                <InputField label="Hero Title" value={formData.heroTitle} field="heroTitle" placeholder="Your main headline" />
-                <InputField label="Hero Subtitle" value={formData.heroSubtitle} field="heroSubtitle" textarea placeholder="Supporting text" />
-                <InputField label="Button Text" value={formData.heroButtonText} field="heroButtonText" placeholder="View Projects" />
+                <InputField label="Hero Title" value={formData.heroTitle} field="heroTitle" placeholder="Your main headline" onChange={handleFieldChange} />
+                <InputField label="Hero Subtitle" value={formData.heroSubtitle} field="heroSubtitle" textarea placeholder="Supporting text" onChange={handleFieldChange} />
+                <InputField label="Button Text" value={formData.heroButtonText} field="heroButtonText" placeholder="View Projects" onChange={handleFieldChange} />
                 <div className="grid grid-cols-2 gap-6">
-                  <SelectField label="Title Size" value={formData.heroTitleSize} field="heroTitleSize" options={HEADING_SIZES} />
-                  <SelectField label="Subtitle Size" value={formData.heroSubtitleSize} field="heroSubtitleSize" options={["sm", "base", "lg", "xl", "2xl"]} />
+                  <SelectField label="Title Size" value={formData.heroTitleSize} field="heroTitleSize" options={HEADING_SIZES} onChange={handleFieldChange} />
+                  <SelectField label="Subtitle Size" value={formData.heroSubtitleSize} field="heroSubtitleSize" options={["sm", "base", "lg", "xl", "2xl"]} onChange={handleFieldChange} />
                 </div>
               </div>
 
@@ -483,9 +595,9 @@ export default function SettingsPage() {
                 <div className="space-y-4">
                   <p className="text-sm text-white/60 uppercase tracking-wider">Title Font</p>
                   <div className="grid grid-cols-3 gap-4">
-                    <SelectField label="Font Family" value={formData.heroTitleFont} field="heroTitleFont" options={FONT_OPTIONS} />
-                    <SelectField label="Font Weight" value={formData.heroTitleWeight} field="heroTitleWeight" options={FONT_WEIGHTS} />
-                    <ColorField label="Title Color" value={formData.heroTitleColor} field="heroTitleColor" />
+                    <SelectField label="Font Family" value={formData.heroTitleFont} field="heroTitleFont" options={FONT_OPTIONS} onChange={handleFieldChange} />
+                    <SelectField label="Font Weight" value={formData.heroTitleWeight} field="heroTitleWeight" options={FONT_WEIGHTS} onChange={handleFieldChange} />
+                    <ColorField label="Title Color" value={formData.heroTitleColor} field="heroTitleColor" onChange={handleFieldChange} />
                   </div>
                 </div>
 
@@ -493,9 +605,9 @@ export default function SettingsPage() {
                 <div className="space-y-4">
                   <p className="text-sm text-white/60 uppercase tracking-wider">Subtitle Font</p>
                   <div className="grid grid-cols-3 gap-4">
-                    <SelectField label="Font Family" value={formData.heroSubtitleFont} field="heroSubtitleFont" options={FONT_OPTIONS} />
-                    <SelectField label="Font Weight" value={formData.heroSubtitleWeight} field="heroSubtitleWeight" options={FONT_WEIGHTS} />
-                    <ColorField label="Subtitle Color" value={formData.heroSubtitleColor} field="heroSubtitleColor" />
+                    <SelectField label="Font Family" value={formData.heroSubtitleFont} field="heroSubtitleFont" options={FONT_OPTIONS} onChange={handleFieldChange} />
+                    <SelectField label="Font Weight" value={formData.heroSubtitleWeight} field="heroSubtitleWeight" options={FONT_WEIGHTS} onChange={handleFieldChange} />
+                    <ColorField label="Subtitle Color" value={formData.heroSubtitleColor} field="heroSubtitleColor" onChange={handleFieldChange} />
                   </div>
                 </div>
 
@@ -503,8 +615,8 @@ export default function SettingsPage() {
                 <div className="space-y-4">
                   <p className="text-sm text-white/60 uppercase tracking-wider">Tagline Font</p>
                   <div className="grid grid-cols-2 gap-4">
-                    <SelectField label="Font Family" value={formData.heroTaglineFont} field="heroTaglineFont" options={FONT_OPTIONS} />
-                    <ColorField label="Tagline Color" value={formData.heroTaglineColor} field="heroTaglineColor" />
+                    <SelectField label="Font Family" value={formData.heroTaglineFont} field="heroTaglineFont" options={FONT_OPTIONS} onChange={handleFieldChange} />
+                    <ColorField label="Tagline Color" value={formData.heroTaglineColor} field="heroTaglineColor" onChange={handleFieldChange} />
                   </div>
                 </div>
               </div>
@@ -513,7 +625,7 @@ export default function SettingsPage() {
                 <h3 className="text-lg font-medium text-[#BBFF00]">Background</h3>
                 <div className="flex gap-4">
                   {["color", "image", "video"].map(type => (
-                    <button key={type} onClick={() => setFormData({ ...formData, heroBgType: type })}
+                    <button key={type} onClick={() => handleFieldChange("heroBgType", type)}
                       className={`flex-1 p-4 rounded-lg border-2 transition-all flex flex-col items-center gap-2 ${formData.heroBgType === type ? "border-[#BBFF00] bg-[#BBFF00]/10" : "border-white/10 hover:border-white/30"}`}>
                       {type === "color" && <Palette size={24} />}
                       {type === "image" && <ImageIcon size={24} />}
@@ -522,16 +634,16 @@ export default function SettingsPage() {
                     </button>
                   ))}
                 </div>
-                {formData.heroBgType === "color" && <ColorField label="Background Color" value={formData.heroBgColor} field="heroBgColor" />}
-                {formData.heroBgType === "image" && <ImageUpload label="Background Image" value={formData.heroBgImage} field="heroBgImage" inputRef={heroImageRef} />}
-                {formData.heroBgType === "video" && <InputField label="Video URL" value={formData.heroBgVideo} field="heroBgVideo" placeholder="https://..." />}
+                {formData.heroBgType === "color" && <ColorField label="Background Color" value={formData.heroBgColor} field="heroBgColor" onChange={handleFieldChange} />}
+                {formData.heroBgType === "image" && <ImageUpload label="Background Image" value={formData.heroBgImage} field="heroBgImage" onUpload={handleUpload} uploading={uploading} />}
+                {formData.heroBgType === "video" && <InputField label="Video URL" value={formData.heroBgVideo} field="heroBgVideo" placeholder="https://..." onChange={handleFieldChange} />}
                 {(formData.heroBgType === "image" || formData.heroBgType === "video") && (
                   <div className="space-y-4">
-                    <ToggleField label="Enable Overlay" value={formData.heroBgOverlay} field="heroBgOverlay" />
+                    <ToggleField label="Enable Overlay" value={formData.heroBgOverlay} field="heroBgOverlay" onChange={handleFieldChange} />
                     {formData.heroBgOverlay && (
                       <>
-                        <ColorField label="Overlay Color" value={formData.heroBgOverlayColor} field="heroBgOverlayColor" />
-                        <SliderField label="Overlay Opacity" value={formData.heroBgOverlayOpacity} field="heroBgOverlayOpacity" min={0} max={1} step={0.1} />
+                        <ColorField label="Overlay Color" value={formData.heroBgOverlayColor} field="heroBgOverlayColor" onChange={handleFieldChange} />
+                        <SliderField label="Overlay Opacity" value={formData.heroBgOverlayOpacity} field="heroBgOverlayOpacity" min={0} max={1} step={0.1} onChange={handleFieldChange} />
                       </>
                     )}
                   </div>
@@ -542,7 +654,7 @@ export default function SettingsPage() {
                 <h3 className="text-lg font-medium text-[#BBFF00]">Layout</h3>
                 <div className="flex gap-4">
                   {[{ id: "center", icon: AlignCenter }, { id: "left", icon: AlignLeft }, { id: "right", icon: AlignRight }, { id: "split", icon: SplitSquareHorizontal }].map(layout => (
-                    <button key={layout.id} onClick={() => setFormData({ ...formData, heroLayout: layout.id })}
+                    <button key={layout.id} onClick={() => handleFieldChange("heroLayout", layout.id)}
                       className={`flex-1 p-4 rounded-lg border-2 transition-all flex flex-col items-center gap-2 ${formData.heroLayout === layout.id ? "border-[#BBFF00] bg-[#BBFF00]/10" : "border-white/10 hover:border-white/30"}`}>
                       <layout.icon size={24} />
                       <span className="text-sm capitalize">{layout.id}</span>
@@ -550,15 +662,15 @@ export default function SettingsPage() {
                   ))}
                 </div>
                 <div className="grid grid-cols-2 gap-6">
-                  <SelectField label="Hero Height" value={formData.heroHeight} field="heroHeight" options={HERO_HEIGHTS} />
-                  <SelectField label="Content Width" value={formData.heroContentWidth} field="heroContentWidth" options={CONTENT_WIDTHS} />
+                  <SelectField label="Hero Height" value={formData.heroHeight} field="heroHeight" options={HERO_HEIGHTS} onChange={handleFieldChange} />
+                  <SelectField label="Content Width" value={formData.heroContentWidth} field="heroContentWidth" options={CONTENT_WIDTHS} onChange={handleFieldChange} />
                 </div>
               </div>
 
               <div className="p-6 bg-white/5 rounded-xl space-y-4">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Effects</h3>
-                <ToggleField label="Parallax Background" value={formData.heroParallax} field="heroParallax" description="Background moves slower on scroll" />
-                <ToggleField label="Scroll Indicator" value={formData.heroScrollIndicator} field="heroScrollIndicator" description="Show arrow at bottom" />
+                <ToggleField label="Parallax Background" value={formData.heroParallax} field="heroParallax" description="Background moves slower on scroll" onChange={handleFieldChange} />
+                <ToggleField label="Scroll Indicator" value={formData.heroScrollIndicator} field="heroScrollIndicator" description="Show arrow at bottom" onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -568,25 +680,25 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Navigation Style</h3>
-                <SelectField label="Style" value={formData.navStyle} field="navStyle" options={[{ value: "transparent", label: "Transparent" }, { value: "solid", label: "Solid" }, { value: "blur", label: "Blur/Glass" }]} />
-                <SelectField label="Position" value={formData.navPosition} field="navPosition" options={[{ value: "fixed", label: "Fixed" }, { value: "sticky", label: "Sticky" }, { value: "static", label: "Static" }]} />
+                <SelectField label="Style" value={formData.navStyle} field="navStyle" options={[{ value: "transparent", label: "Transparent" }, { value: "solid", label: "Solid" }, { value: "blur", label: "Blur/Glass" }]} onChange={handleFieldChange} />
+                <SelectField label="Position" value={formData.navPosition} field="navPosition" options={[{ value: "fixed", label: "Fixed" }, { value: "sticky", label: "Sticky" }, { value: "static", label: "Static" }]} onChange={handleFieldChange} />
                 <div className="grid grid-cols-2 gap-6">
-                  <SelectField label="Height" value={formData.navHeight} field="navHeight" options={NAV_HEIGHTS} />
-                  <SelectField label="Alignment" value={formData.navAlignment} field="navAlignment" options={[{ value: "between", label: "Space Between" }, { value: "left", label: "Left" }, { value: "center", label: "Center" }, { value: "right", label: "Right" }]} />
+                  <SelectField label="Height" value={formData.navHeight} field="navHeight" options={NAV_HEIGHTS} onChange={handleFieldChange} />
+                  <SelectField label="Alignment" value={formData.navAlignment} field="navAlignment" options={[{ value: "between", label: "Space Between" }, { value: "left", label: "Left" }, { value: "center", label: "Center" }, { value: "right", label: "Right" }]} onChange={handleFieldChange} />
                 </div>
                 <div className="grid grid-cols-2 gap-6">
-                  <ColorField label="Background Color" value={formData.navBgColor} field="navBgColor" />
-                  <SliderField label="Background Opacity" value={formData.navBgOpacity} field="navBgOpacity" min={0} max={1} step={0.1} />
+                  <ColorField label="Background Color" value={formData.navBgColor} field="navBgColor" onChange={handleFieldChange} />
+                  <SliderField label="Background Opacity" value={formData.navBgOpacity} field="navBgOpacity" min={0} max={1} step={0.1} onChange={handleFieldChange} />
                 </div>
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-4">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Behavior</h3>
-                <ToggleField label="Hide on Scroll" value={formData.navHideOnScroll} field="navHideOnScroll" />
-                <ToggleField label="Show Logo" value={formData.navShowLogo} field="navShowLogo" />
+                <ToggleField label="Hide on Scroll" value={formData.navHideOnScroll} field="navHideOnScroll" onChange={handleFieldChange} />
+                <ToggleField label="Show Logo" value={formData.navShowLogo} field="navShowLogo" onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Mobile Menu</h3>
-                <SelectField label="Mobile Menu Style" value={formData.mobileMenuStyle} field="mobileMenuStyle" options={[{ value: "slide", label: "Slide from right" }, { value: "overlay", label: "Full overlay" }, { value: "dropdown", label: "Dropdown" }]} />
+                <SelectField label="Mobile Menu Style" value={formData.mobileMenuStyle} field="mobileMenuStyle" options={[{ value: "slide", label: "Slide from right" }, { value: "overlay", label: "Full overlay" }, { value: "dropdown", label: "Dropdown" }]} onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -596,56 +708,56 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-4">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Section Visibility</h3>
-                <ToggleField label="Hero Section" value={formData.showHeroSection} field="showHeroSection" />
-                <ToggleField label="About Section" value={formData.showAboutSection} field="showAboutSection" />
-                <ToggleField label="Projects Section" value={formData.showProjectsSection} field="showProjectsSection" />
-                <ToggleField label="Team Section" value={formData.showTeamSection} field="showTeamSection" />
-                <ToggleField label="Services Section" value={formData.showServicesSection} field="showServicesSection" />
-                <ToggleField label="Contact Section" value={formData.showContactSection} field="showContactSection" />
+                <ToggleField label="Hero Section" value={formData.showHeroSection} field="showHeroSection" onChange={handleFieldChange} />
+                <ToggleField label="About Section" value={formData.showAboutSection} field="showAboutSection" onChange={handleFieldChange} />
+                <ToggleField label="Projects Section" value={formData.showProjectsSection} field="showProjectsSection" onChange={handleFieldChange} />
+                <ToggleField label="Team Section" value={formData.showTeamSection} field="showTeamSection" onChange={handleFieldChange} />
+                <ToggleField label="Services Section" value={formData.showServicesSection} field="showServicesSection" onChange={handleFieldChange} />
+                <ToggleField label="Contact Section" value={formData.showContactSection} field="showContactSection" onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Section Styling</h3>
-                <SelectField label="Section Padding" value={formData.sectionPadding} field="sectionPadding" options={SECTION_PADDINGS} />
-                <SelectField label="Section Animation" value={formData.sectionAnimation} field="sectionAnimation" options={[{ value: "none", label: "None" }, { value: "fade", label: "Fade In" }, { value: "slide", label: "Slide Up" }, { value: "zoom", label: "Zoom In" }]} />
+                <SelectField label="Section Padding" value={formData.sectionPadding} field="sectionPadding" options={SECTION_PADDINGS} onChange={handleFieldChange} />
+                <SelectField label="Section Animation" value={formData.sectionAnimation} field="sectionAnimation" options={[{ value: "none", label: "None" }, { value: "fade", label: "Fade In" }, { value: "slide", label: "Slide Up" }, { value: "zoom", label: "Zoom In" }]} onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">About Section</h3>
-                <InputField label="Section Title" value={formData.aboutSectionTitle} field="aboutSectionTitle" />
-                <InputField label="Section Subtitle" value={formData.aboutSectionSubtitle} field="aboutSectionSubtitle" textarea />
-                <InputField label="Quote" value={formData.aboutQuote} field="aboutQuote" />
-                <InputField label="Quote Author" value={formData.aboutQuoteAuthor} field="aboutQuoteAuthor" />
-                <InputField label="Description 1" value={formData.aboutDescription1} field="aboutDescription1" textarea />
-                <InputField label="Description 2" value={formData.aboutDescription2} field="aboutDescription2" textarea />
+                <InputField label="Section Title" value={formData.aboutSectionTitle} field="aboutSectionTitle" onChange={handleFieldChange} />
+                <InputField label="Section Subtitle" value={formData.aboutSectionSubtitle} field="aboutSectionSubtitle" textarea onChange={handleFieldChange} />
+                <InputField label="Quote" value={formData.aboutQuote} field="aboutQuote" onChange={handleFieldChange} />
+                <InputField label="Quote Author" value={formData.aboutQuoteAuthor} field="aboutQuoteAuthor" onChange={handleFieldChange} />
+                <InputField label="Description 1" value={formData.aboutDescription1} field="aboutDescription1" textarea onChange={handleFieldChange} />
+                <InputField label="Description 2" value={formData.aboutDescription2} field="aboutDescription2" textarea onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Statistics</h3>
                 <div className="grid grid-cols-3 gap-4">
-                  <InputField label="Projects Number" value={formData.projectsCompleted} field="projectsCompleted" />
-                  <InputField label="Projects Label" value={formData.projectsLabel} field="projectsLabel" />
-                  <InputField label="Projects Desc" value={formData.projectsDesc} field="projectsDesc" />
+                  <InputField label="Projects Number" value={formData.projectsCompleted} field="projectsCompleted" onChange={handleFieldChange} />
+                  <InputField label="Projects Label" value={formData.projectsLabel} field="projectsLabel" onChange={handleFieldChange} />
+                  <InputField label="Projects Desc" value={formData.projectsDesc} field="projectsDesc" onChange={handleFieldChange} />
                 </div>
                 <div className="grid grid-cols-3 gap-4">
-                  <InputField label="Years Number" value={formData.yearsExperience} field="yearsExperience" />
-                  <InputField label="Years Label" value={formData.yearsLabel} field="yearsLabel" />
-                  <InputField label="Years Desc" value={formData.yearsDesc} field="yearsDesc" />
+                  <InputField label="Years Number" value={formData.yearsExperience} field="yearsExperience" onChange={handleFieldChange} />
+                  <InputField label="Years Label" value={formData.yearsLabel} field="yearsLabel" onChange={handleFieldChange} />
+                  <InputField label="Years Desc" value={formData.yearsDesc} field="yearsDesc" onChange={handleFieldChange} />
                 </div>
                 <div className="grid grid-cols-3 gap-4">
-                  <InputField label="Awards Number" value={formData.awardsWon} field="awardsWon" />
-                  <InputField label="Awards Label" value={formData.awardsLabel} field="awardsLabel" />
-                  <InputField label="Awards Desc" value={formData.awardsDesc} field="awardsDesc" />
+                  <InputField label="Awards Number" value={formData.awardsWon} field="awardsWon" onChange={handleFieldChange} />
+                  <InputField label="Awards Label" value={formData.awardsLabel} field="awardsLabel" onChange={handleFieldChange} />
+                  <InputField label="Awards Desc" value={formData.awardsDesc} field="awardsDesc" onChange={handleFieldChange} />
                 </div>
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Services Section</h3>
-                <InputField label="Section Title" value={formData.servicesSectionTitle} field="servicesSectionTitle" />
-                <InputField label="Section Subtitle" value={formData.servicesSectionSubtitle} field="servicesSectionSubtitle" textarea />
+                <InputField label="Section Title" value={formData.servicesSectionTitle} field="servicesSectionTitle" onChange={handleFieldChange} />
+                <InputField label="Section Subtitle" value={formData.servicesSectionSubtitle} field="servicesSectionSubtitle" textarea onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Contact Section</h3>
-                <InputField label="Section Title" value={formData.contactSectionTitle} field="contactSectionTitle" />
-                <InputField label="Section Subtitle" value={formData.contactSectionSubtitle} field="contactSectionSubtitle" textarea />
-                <InputField label="CTA Text" value={formData.contactCTA} field="contactCTA" textarea />
-                <InputField label="Button Text" value={formData.contactButtonText} field="contactButtonText" />
+                <InputField label="Section Title" value={formData.contactSectionTitle} field="contactSectionTitle" onChange={handleFieldChange} />
+                <InputField label="Section Subtitle" value={formData.contactSectionSubtitle} field="contactSectionSubtitle" textarea onChange={handleFieldChange} />
+                <InputField label="CTA Text" value={formData.contactCTA} field="contactCTA" textarea onChange={handleFieldChange} />
+                <InputField label="Button Text" value={formData.contactButtonText} field="contactButtonText" onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -655,18 +767,18 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Project Card Style</h3>
-                <SelectField label="Card Style" value={formData.projectCardStyle} field="projectCardStyle" options={[{ value: "minimal", label: "Minimal" }, { value: "detailed", label: "Detailed" }, { value: "overlay", label: "Overlay" }]} />
+                <SelectField label="Card Style" value={formData.projectCardStyle} field="projectCardStyle" options={[{ value: "minimal", label: "Minimal" }, { value: "detailed", label: "Detailed" }, { value: "overlay", label: "Overlay" }]} onChange={handleFieldChange} />
                 <div className="grid grid-cols-2 gap-6">
-                  <SelectField label="Grid Columns" value={formData.projectGridCols} field="projectGridCols" options={GRID_COLS.map(n => ({ value: n, label: `${n} columns` }))} />
-                  <SelectField label="Aspect Ratio" value={formData.projectAspectRatio} field="projectAspectRatio" options={ASPECT_RATIOS} />
+                  <SelectField label="Grid Columns" value={formData.projectGridCols} field="projectGridCols" options={GRID_COLS.map(n => ({ value: String(n), label: `${n} columns` }))} onChange={handleFieldChange} />
+                  <SelectField label="Aspect Ratio" value={formData.projectAspectRatio} field="projectAspectRatio" options={ASPECT_RATIOS} onChange={handleFieldChange} />
                 </div>
-                <SelectField label="Hover Effect" value={formData.projectHoverEffect} field="projectHoverEffect" options={[{ value: "none", label: "None" }, { value: "zoom", label: "Zoom" }, { value: "slide", label: "Slide" }, { value: "fade", label: "Fade" }]} />
+                <SelectField label="Hover Effect" value={formData.projectHoverEffect} field="projectHoverEffect" options={[{ value: "none", label: "None" }, { value: "zoom", label: "Zoom" }, { value: "slide", label: "Slide" }, { value: "fade", label: "Fade" }]} onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-4">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Display Options</h3>
-                <ToggleField label="Show Project Info" value={formData.projectShowInfo} field="projectShowInfo" />
-                <ToggleField label="Show Category" value={formData.projectShowCategory} field="projectShowCategory" />
-                <ToggleField label="Show Year" value={formData.projectShowYear} field="projectShowYear" />
+                <ToggleField label="Show Project Info" value={formData.projectShowInfo} field="projectShowInfo" onChange={handleFieldChange} />
+                <ToggleField label="Show Category" value={formData.projectShowCategory} field="projectShowCategory" onChange={handleFieldChange} />
+                <ToggleField label="Show Year" value={formData.projectShowYear} field="projectShowYear" onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -676,19 +788,19 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Team Section</h3>
-                <InputField label="Section Title" value={formData.teamSectionTitle} field="teamSectionTitle" />
-                <InputField label="Section Subtitle" value={formData.teamSectionSubtitle} field="teamSectionSubtitle" textarea />
+                <InputField label="Section Title" value={formData.teamSectionTitle} field="teamSectionTitle" onChange={handleFieldChange} />
+                <InputField label="Section Subtitle" value={formData.teamSectionSubtitle} field="teamSectionSubtitle" textarea onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Layout</h3>
-                <SelectField label="Layout Style" value={formData.teamLayout} field="teamLayout" options={[{ value: "grid", label: "Grid" }, { value: "carousel", label: "Carousel" }, { value: "list", label: "List" }]} />
-                <SelectField label="Card Style" value={formData.teamCardStyle} field="teamCardStyle" options={[{ value: "photo", label: "Photo Focus" }, { value: "info", label: "Info Focus" }, { value: "minimal", label: "Minimal" }]} />
-                <SelectField label="Grid Columns" value={formData.teamGridCols} field="teamGridCols" options={GRID_COLS.map(n => ({ value: n, label: `${n} columns` }))} />
+                <SelectField label="Layout Style" value={formData.teamLayout} field="teamLayout" options={[{ value: "grid", label: "Grid" }, { value: "carousel", label: "Carousel" }, { value: "list", label: "List" }]} onChange={handleFieldChange} />
+                <SelectField label="Card Style" value={formData.teamCardStyle} field="teamCardStyle" options={[{ value: "photo", label: "Photo Focus" }, { value: "info", label: "Info Focus" }, { value: "minimal", label: "Minimal" }]} onChange={handleFieldChange} />
+                <SelectField label="Grid Columns" value={formData.teamGridCols} field="teamGridCols" options={GRID_COLS.map(n => ({ value: String(n), label: `${n} columns` }))} onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-4">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Display Options</h3>
-                <ToggleField label="Show Social Links" value={formData.teamShowSocial} field="teamShowSocial" />
-                <ToggleField label="Show Contact Info" value={formData.teamShowContact} field="teamShowContact" />
+                <ToggleField label="Show Social Links" value={formData.teamShowSocial} field="teamShowSocial" onChange={handleFieldChange} />
+                <ToggleField label="Show Contact Info" value={formData.teamShowContact} field="teamShowContact" onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -698,11 +810,11 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Gallery Settings</h3>
-                <SelectField label="Lightbox Style" value={formData.galleryLightboxStyle} field="galleryLightboxStyle" options={[{ value: "modern", label: "Modern" }, { value: "classic", label: "Classic" }, { value: "minimal", label: "Minimal" }]} />
-                <SelectField label="Filter Animation" value={formData.galleryFilterAnimation} field="galleryFilterAnimation" options={[{ value: "fade", label: "Fade" }, { value: "slide", label: "Slide" }, { value: "none", label: "None" }]} />
-                <SelectField label="Layout" value={formData.galleryLayout} field="galleryLayout" options={[{ value: "grid", label: "Grid" }, { value: "masonry", label: "Masonry" }]} />
-                <SelectField label="Pagination Style" value={formData.galleryPagination} field="galleryPagination" options={[{ value: "pagination", label: "Pagination" }, { value: "infinite", label: "Infinite Scroll" }, { value: "loadmore", label: "Load More Button" }]} />
-                <InputField label="Items Per Page" value={formData.galleryItemsPerPage} field="galleryItemsPerPage" />
+                <SelectField label="Lightbox Style" value={formData.galleryLightboxStyle} field="galleryLightboxStyle" options={[{ value: "modern", label: "Modern" }, { value: "classic", label: "Classic" }, { value: "minimal", label: "Minimal" }]} onChange={handleFieldChange} />
+                <SelectField label="Filter Animation" value={formData.galleryFilterAnimation} field="galleryFilterAnimation" options={[{ value: "fade", label: "Fade" }, { value: "slide", label: "Slide" }, { value: "none", label: "None" }]} onChange={handleFieldChange} />
+                <SelectField label="Layout" value={formData.galleryLayout} field="galleryLayout" options={[{ value: "grid", label: "Grid" }, { value: "masonry", label: "Masonry" }]} onChange={handleFieldChange} />
+                <SelectField label="Pagination Style" value={formData.galleryPagination} field="galleryPagination" options={[{ value: "pagination", label: "Pagination" }, { value: "infinite", label: "Infinite Scroll" }, { value: "loadmore", label: "Load More Button" }]} onChange={handleFieldChange} />
+                <InputField label="Items Per Page" value={formData.galleryItemsPerPage} field="galleryItemsPerPage" onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -712,9 +824,9 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Mobile Settings</h3>
-                <SliderField label="Font Size Scale" value={formData.mobileFontScale} field="mobileFontScale" min={0.8} max={1.2} step={0.05} />
-                <ToggleField label="Disable Animations" value={formData.mobileDisableAnimations} field="mobileDisableAnimations" description="Disable animations on mobile for better performance" />
-                <ToggleField label="Touch-Friendly Buttons" value={formData.mobileTouchFriendly} field="mobileTouchFriendly" description="Increase button sizes for easier tapping" />
+                <SliderField label="Font Size Scale" value={formData.mobileFontScale} field="mobileFontScale" min={0.8} max={1.2} step={0.05} onChange={handleFieldChange} />
+                <ToggleField label="Disable Animations" value={formData.mobileDisableAnimations} field="mobileDisableAnimations" description="Disable animations on mobile for better performance" onChange={handleFieldChange} />
+                <ToggleField label="Touch-Friendly Buttons" value={formData.mobileTouchFriendly} field="mobileTouchFriendly" description="Increase button sizes for easier tapping" onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -724,16 +836,16 @@ export default function SettingsPage() {
             <div className="space-y-8">
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Accessibility Options</h3>
-                <ToggleField label="High Contrast Mode" value={formData.enableHighContrast} field="enableHighContrast" />
-                <SliderField label="Font Size Multiplier" value={formData.fontSizeMultiplier} field="fontSizeMultiplier" min={0.8} max={1.5} step={0.1} />
-                <ToggleField label="Reduce Motion" value={formData.enableReduceMotion} field="enableReduceMotion" description="Respect user's motion preferences" />
-                <ColorField label="Focus Indicator Color" value={formData.focusIndicatorColor} field="focusIndicatorColor" />
+                <ToggleField label="High Contrast Mode" value={formData.enableHighContrast} field="enableHighContrast" onChange={handleFieldChange} />
+                <SliderField label="Font Size Multiplier" value={formData.fontSizeMultiplier} field="fontSizeMultiplier" min={0.8} max={1.5} step={0.1} onChange={handleFieldChange} />
+                <ToggleField label="Reduce Motion" value={formData.enableReduceMotion} field="enableReduceMotion" description="Respect user's motion preferences" onChange={handleFieldChange} />
+                <ColorField label="Focus Indicator Color" value={formData.focusIndicatorColor} field="focusIndicatorColor" onChange={handleFieldChange} />
               </div>
               <div className="p-6 bg-white/5 rounded-xl space-y-4">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Visual Effects</h3>
-                <ToggleField label="Enable Grain Texture" value={formData.enableGrain} field="enableGrain" />
-                <ToggleField label="Custom Cursor" value={formData.enableCursor} field="enableCursor" />
-                <ToggleField label="Enable Animations" value={formData.enableAnimations} field="enableAnimations" />
+                <ToggleField label="Enable Grain Texture" value={formData.enableGrain} field="enableGrain" onChange={handleFieldChange} />
+                <ToggleField label="Custom Cursor" value={formData.enableCursor} field="enableCursor" onChange={handleFieldChange} />
+                <ToggleField label="Enable Animations" value={formData.enableAnimations} field="enableAnimations" onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -744,13 +856,13 @@ export default function SettingsPage() {
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">Maintenance Mode</h3>
                 <div className={`p-4 rounded-lg ${formData.maintenanceMode ? "bg-red-500/20 border border-red-500" : "bg-white/5"}`}>
-                  <ToggleField label="Enable Maintenance Mode" value={formData.maintenanceMode} field="maintenanceMode" description={formData.maintenanceMode ? "⚠️ Site is currently in maintenance mode!" : "Site is live"} />
+                  <ToggleField label="Enable Maintenance Mode" value={formData.maintenanceMode} field="maintenanceMode" description={formData.maintenanceMode ? "⚠️ Site is currently in maintenance mode!" : "Site is live"} onChange={handleFieldChange} />
                 </div>
-                <InputField label="Maintenance Title" value={formData.maintenanceTitle} field="maintenanceTitle" placeholder="We'll Be Back Soon" />
-                <InputField label="Maintenance Message" value={formData.maintenanceMessage} field="maintenanceMessage" textarea placeholder="We're performing scheduled maintenance..." />
-                <InputField label="Expected Back Date" value={formData.maintenanceEndDate} field="maintenanceEndDate" placeholder="2024-12-31T12:00" />
-                <ToggleField label="Allow Admin Access" value={formData.maintenanceAllowAdmin} field="maintenanceAllowAdmin" description="Let logged-in admins bypass maintenance mode" />
-                <InputField label="Background Image URL" value={formData.maintenanceBgImage} field="maintenanceBgImage" placeholder="https://..." />
+                <InputField label="Maintenance Title" value={formData.maintenanceTitle} field="maintenanceTitle" placeholder="We'll Be Back Soon" onChange={handleFieldChange} />
+                <InputField label="Maintenance Message" value={formData.maintenanceMessage} field="maintenanceMessage" textarea placeholder="We're performing scheduled maintenance..." onChange={handleFieldChange} />
+                <InputField label="Expected Back Date" value={formData.maintenanceEndDate} field="maintenanceEndDate" placeholder="2024-12-31T12:00" onChange={handleFieldChange} />
+                <ToggleField label="Allow Admin Access" value={formData.maintenanceAllowAdmin} field="maintenanceAllowAdmin" description="Let logged-in admins bypass maintenance mode" onChange={handleFieldChange} />
+                <InputField label="Background Image URL" value={formData.maintenanceBgImage} field="maintenanceBgImage" placeholder="https://..." onChange={handleFieldChange} />
               </div>
             </div>
           )}
@@ -761,13 +873,13 @@ export default function SettingsPage() {
               <div className="p-6 bg-white/5 rounded-xl space-y-6">
                 <h3 className="text-lg font-medium text-[#BBFF00]">SEO Settings</h3>
                 <div className="space-y-2">
-                  <InputField label="Meta Title" value={formData.metaTitle} field="metaTitle" placeholder="Your Site Title | Tagline" />
+                  <InputField label="Meta Title" value={formData.metaTitle} field="metaTitle" placeholder="Your Site Title | Tagline" onChange={handleFieldChange} />
                   <p className={`text-xs ${(formData.metaTitle?.length || 0) > 60 ? "text-red-400" : "text-white/40"}`}>
                     {formData.metaTitle?.length || 0}/60 characters
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <InputField label="Meta Description" value={formData.metaDescription} field="metaDescription" textarea placeholder="A brief description of your site..." />
+                  <InputField label="Meta Description" value={formData.metaDescription} field="metaDescription" textarea placeholder="A brief description of your site..." onChange={handleFieldChange} />
                   <p className={`text-xs ${(formData.metaDescription?.length || 0) > 160 ? "text-red-400" : "text-white/40"}`}>
                     {formData.metaDescription?.length || 0}/160 characters
                   </p>
