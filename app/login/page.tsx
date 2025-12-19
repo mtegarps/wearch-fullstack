@@ -74,7 +74,7 @@ export default function LoginPage() {
               <div className="relative">
                 <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
                 <input type="email" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="admin@wearch.id" className="w-full bg-white/5 border border-white/10 text-white placeholder-white/20 px-12 py-4 text-sm focus:outline-none focus:border-[#BBFF00]/50" required />
+                  placeholder="Email" className="w-full bg-white/5 border border-white/10 text-white placeholder-white/20 px-12 py-4 text-sm focus:outline-none focus:border-[#BBFF00]/50" required />
               </div>
             </div>
 
@@ -100,10 +100,6 @@ export default function LoginPage() {
                   : <><span>Sign In</span><ArrowRight size={16} /></>}
               </span>
             </motion.button>
-
-            <div className="text-center pt-4 border-t border-white/10">
-              <p className="text-white/30 text-xs">Demo: admin@wearch.id / admin123</p>
-            </div>
           </form>
         </motion.div>
 
