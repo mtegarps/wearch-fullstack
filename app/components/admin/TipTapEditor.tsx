@@ -32,13 +32,39 @@ import {
   Minus,
   Code2,
 } from "lucide-react";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 
 interface TipTapEditorProps {
   content: string;
   onChange: (content: string) => void;
   placeholder?: string;
 }
+
+// Pindahkan ke luar component
+const ToolbarButton = ({
+  onClick,
+  isActive = false,
+  children,
+  title,
+}: {
+  onClick: () => void;
+  isActive?: boolean;
+  children: React.ReactNode;
+  title: string;
+}) => (
+  <button
+    type="button"
+    onClick={onClick}
+    title={title}
+    className={`p-2 rounded-lg transition-all ${
+      isActive
+        ? "bg-[#BBFF00] text-[#242222]"
+        : "text-white/60 hover:text-white hover:bg-white/10"
+    }`}
+  >
+    {children}
+  </button>
+);
 
 export default function TipTapEditor({
   content,
@@ -51,6 +77,7 @@ export default function TipTapEditor({
   const [showImageInput, setShowImageInput] = useState(false);
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [showYoutubeInput, setShowYoutubeInput] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
@@ -96,7 +123,12 @@ export default function TipTapEditor({
           "prose prose-invert prose-lg max-w-none min-h-[400px] focus:outline-none px-4 py-3",
       },
     },
+    immediatelyRender: false,
   });
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const addImage = useCallback(() => {
     if (imageUrl && editor) {
@@ -150,32 +182,24 @@ export default function TipTapEditor({
     }
   };
 
-  if (!editor) return null;
+  // Loading state
+  if (!isMounted) {
+    return (
+      <div className="bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-[#242222] border-b border-white/10 p-2 h-12" />
+        <div className="min-h-[400px] px-4 py-3 text-white/30">Loading editor...</div>
+      </div>
+    );
+  }
 
-  const ToolbarButton = ({
-    onClick,
-    isActive = false,
-    children,
-    title,
-  }: {
-    onClick: () => void;
-    isActive?: boolean;
-    children: React.ReactNode;
-    title: string;
-  }) => (
-    <button
-      type="button"
-      onClick={onClick}
-      title={title}
-      className={`p-2 rounded-lg transition-all ${
-        isActive
-          ? "bg-[#BBFF00] text-[#242222]"
-          : "text-white/60 hover:text-white hover:bg-white/10"
-      }`}
-    >
-      {children}
-    </button>
-  );
+  if (!editor) {
+    return (
+      <div className="bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden">
+        <div className="bg-[#242222] border-b border-white/10 p-2 h-12" />
+        <div className="min-h-[400px] px-4 py-3 text-white/30">Initializing...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden">
@@ -375,7 +399,7 @@ export default function TipTapEditor({
       </div>
 
       {/* Link Input */}
-      {showLinkInput && (
+      {showLinkInput ? (
         <div className="bg-[#242222] border-b border-white/10 p-3 flex gap-2">
           <input
             type="url"
@@ -401,10 +425,10 @@ export default function TipTapEditor({
             Remove
           </button>
         </div>
-      )}
+      ) : null}
 
       {/* Image URL Input */}
-      {showImageInput && (
+      {showImageInput ? (
         <div className="bg-[#242222] border-b border-white/10 p-3 flex gap-2">
           <input
             type="url"
@@ -421,10 +445,10 @@ export default function TipTapEditor({
             Add Image
           </button>
         </div>
-      )}
+      ) : null}
 
       {/* YouTube Input */}
-      {showYoutubeInput && (
+      {showYoutubeInput ? (
         <div className="bg-[#242222] border-b border-white/10 p-3 flex gap-2">
           <input
             type="url"
@@ -441,16 +465,23 @@ export default function TipTapEditor({
             Add Video
           </button>
         </div>
-      )}
+      ) : null}
 
-      {/* Bubble Menu */}
-      {editor && (
+      {/* Editor Content */}
+      <EditorContent editor={editor} />
+
+      {/* Bubble Menu - render terpisah dengan portal */}
+      {editor && editor.isEditable && (
         <BubbleMenu
           editor={editor}
-          tippyOptions={{ duration: 100 }}
+          tippyOptions={{ 
+            duration: 100,
+            appendTo: () => document.body,
+          }}
           className="bg-[#242222] border border-white/10 rounded-lg shadow-xl flex overflow-hidden"
         >
           <button
+            type="button"
             onClick={() => editor.chain().focus().toggleBold().run()}
             className={`p-2 ${
               editor.isActive("bold") ? "bg-[#BBFF00] text-[#242222]" : "text-white"
@@ -459,6 +490,7 @@ export default function TipTapEditor({
             <Bold size={16} />
           </button>
           <button
+            type="button"
             onClick={() => editor.chain().focus().toggleItalic().run()}
             className={`p-2 ${
               editor.isActive("italic") ? "bg-[#BBFF00] text-[#242222]" : "text-white"
@@ -467,6 +499,7 @@ export default function TipTapEditor({
             <Italic size={16} />
           </button>
           <button
+            type="button"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
             className={`p-2 ${
               editor.isActive("underline") ? "bg-[#BBFF00] text-[#242222]" : "text-white"
@@ -476,9 +509,6 @@ export default function TipTapEditor({
           </button>
         </BubbleMenu>
       )}
-
-      {/* Editor Content */}
-      <EditorContent editor={editor} />
 
       {/* Editor Styles */}
       <style jsx global>{`

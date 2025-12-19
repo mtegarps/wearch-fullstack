@@ -90,10 +90,9 @@ export default function Navigation({
               </div>
               <div className="flex flex-col">
                 <span
-                  className="text-lg font-bold tracking-tight leading-none"
+                  className="text-lg tracking-tight leading-none"
                   style={{
-                    fontFamily:
-                      settings.navFont || "system-ui, -apple-system, sans-serif",
+                    fontFamily: "Sk-Modernist Bold, sans-serif",
                     fontWeight: 700,
                     color: settings.darkText || "#242222",
                   }}
@@ -103,13 +102,12 @@ export default function Navigation({
                 <span
                   className="text-[10px] tracking-[0.15em] uppercase mt-0.5"
                   style={{
-                    fontFamily:
-                      settings.navFont || "system-ui, -apple-system, sans-serif",
-                    fontWeight: 500,
+                    fontFamily: "Sk-Modernist, sans-serif",
+                    fontWeight: 400,
                     color: settings.mutedText || "#B8B8B8",
                   }}
                 >
-                  est {settings.established}
+                  {settings.established}
                 </span>
               </div>
             </motion.div>
@@ -124,8 +122,8 @@ export default function Navigation({
                 whileHover={{ y: -2 }}
                 className="text-sm tracking-[0.1em] uppercase text-gray-600 hover:text-[#c8ff00] transition-colors"
                 style={{
-                  fontFamily: settings.navFont || "system-ui",
-                  fontWeight: settings.navWeight || 500,
+                  fontFamily: "Sk-Modernist Bold, sans-serif",
+                  fontWeight: 700,
                   fontSize: settings.navSize || "12px",
                   letterSpacing: settings.navLetterSpacing || "0.1em",
                 }}
@@ -191,9 +189,10 @@ export default function Navigation({
               }}
               transition={{ delay: idx * 0.1 }}
               onClick={() => setIsMenuOpen(false)}
-              className="block text-4xl font-light tracking-tight"
+              className="block text-4xl tracking-tight"
               style={{
-                fontFamily: settings.headingFont || "system-ui",
+                fontFamily: "Sk-Modernist Bold, sans-serif",
+                fontWeight: 700,
                 color: isDark
                   ? settings.headingColorDark
                   : settings.headingColor,

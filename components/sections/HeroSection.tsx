@@ -128,6 +128,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
         <video
           autoPlay
           loop
+          muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
@@ -163,8 +164,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             <motion.p
               className="text-xs md:text-sm tracking-[0.3em] uppercase mb-8"
               style={{
-                fontFamily:
-                  settings.heroTaglineFont || settings.bodyFont || "system-ui",
+                fontFamily: "Sk-Modernist, sans-serif",
                 color: isDark ? "rgba(255,255,255,0.4)" : "rgba(36,34,34,0.4)",
               }}
               animate={{ opacity: [0.4, 0.6, 0.4] }}
@@ -181,10 +181,8 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             transition={{ duration: 1.2, delay: 0.4 }}
             className={`leading-tight mb-8 tracking-tight ${getTitleSizeClass()}`}
             style={{
-              fontFamily:
-                settings.heroTitleFont || settings.headingFont || "system-ui",
-              fontWeight:
-                settings.heroTitleWeight || settings.headingWeight || "300",
+              fontFamily: "Sk-Modernist Bold, sans-serif",
+              fontWeight: "700",
               color: isDark ? "#FFFFFF" : "#242222",
             }}
           >
@@ -192,7 +190,10 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             <br />
             <motion.span
               className="inline-block italic"
-              style={{ fontWeight: "200" }}
+              style={{ 
+                fontFamily: "Sk-Modernist, sans-serif",
+                fontWeight: "400"
+              }}
               whileHover={{
                 skewX: -3,
                 x: 10,
@@ -212,9 +213,8 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
               settings.heroLayout === "center" ? "mx-auto" : ""
             } ${getSubtitleSizeClass()}`}
             style={{
-              fontFamily:
-                settings.heroSubtitleFont || settings.bodyFont || "system-ui",
-              fontWeight: settings.heroSubtitleWeight || "400",
+              fontFamily: "Sk-Modernist, sans-serif",
+              fontWeight: "400",
               color: isDark ? "rgba(255,255,255,0.6)" : "rgba(36,34,34,0.6)",
             }}
           >
@@ -231,8 +231,10 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
               href="#work"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-3 px-8 py-4 text-sm tracking-[0.1em] uppercase relative overflow-hidden font-semibold"
+              className="group inline-flex items-center gap-3 px-8 py-4 text-sm tracking-[0.1em] uppercase relative overflow-hidden"
               style={{
+                fontFamily: "Sk-Modernist Bold, sans-serif",
+                fontWeight: "700",
                 backgroundColor: settings.buttonBg || settings.primaryColor,
                 color: settings.buttonText || settings.darkText,
                 borderRadius: settings.buttonRadius || "0px",
@@ -282,6 +284,9 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             className={`text-xs tracking-[0.2em] uppercase ${
               isDark ? "text-white/40" : "text-[#242222]/40"
             }`}
+            style={{
+              fontFamily: "Sk-Modernist, sans-serif",
+            }}
           >
             Scroll
           </span>

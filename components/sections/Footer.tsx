@@ -67,7 +67,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
                   className="text-[10px] tracking-[0.15em] uppercase mt-0.5 opacity-40"
                   style={{ fontFamily: settings.navFont, fontWeight: 500 }}
                 >
-                  est {settings.established}
+                  {settings.established}
                 </span>
               </div>
             </motion.div>

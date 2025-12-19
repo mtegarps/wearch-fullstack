@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion, useScroll, useTransform, useSpring, useInView, useMotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Settings, Project } from "@/lib/types";
 
@@ -30,10 +30,9 @@ function ProjectItem({ project, index, onProjectClick, settings }: ProjectItemPr
     offset: ["start end", "end start"],
   });
 
-const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.88, 1, 1, 0.95]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.4]);
-  const blur = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [10, 0, 0, 5]);
   const imageScale = useSpring(isHovered ? 1.08 : 1, { stiffness: 300, damping: 30 });
 
   return (
@@ -53,9 +52,13 @@ const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
             className="inline-block"
           >
             <motion.span
-              className="inline-block px-4 py-2 border text-xs tracking-[0.2em] uppercase"
-              style={{ borderColor: "currentColor", opacity: 0.3 }}
-              whileHover={{ opacity: 0.6, scale: 1.05 }}
+              className="inline-block px-4 py-2 text-xs tracking-[0.2em] uppercase"
+              style={{ 
+                fontFamily: "Sk-Modernist, sans-serif",
+                fontWeight: 400,
+                color: "#B8B8B8",
+              }}
+              whileHover={{ scale: 1.05 }}
             >
               {project.category}
             </motion.span>
@@ -67,38 +70,45 @@ const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             <motion.h3
-              className="text-3xl md:text-5xl font-light tracking-tight leading-tight mb-4"
+              className="text-3xl md:text-5xl tracking-tight leading-tight mb-4"
               animate={isHovered ? { x: 10 } : { x: 0 }}
               transition={{ duration: 0.4 }}
-              style={{ fontFamily: settings.headingFont, fontWeight: settings.headingWeight }}
+              style={{ 
+                fontFamily: "Sk-Modernist Bold, sans-serif",
+                fontWeight: 700,
+                color: "#242222",
+              }}
             >
               {project.title}
             </motion.h3>
 
-            <div className="flex items-center gap-4 text-sm opacity-50">
+            <div 
+              className="flex items-center gap-4 text-sm"
+              style={{
+                fontFamily: "Sk-Modernist, sans-serif",
+                fontWeight: 400,
+                color: "#B8B8B8",
+              }}
+            >
               <span className="tracking-[0.1em] uppercase">{project.location}</span>
-              <span className="w-1 h-1 rounded-full" style={{ backgroundColor: "currentColor" }} />
+              <span className="w-1 h-1 rounded-full" style={{ backgroundColor: "#B8B8B8" }} />
               <span className="tracking-[0.1em]">{project.year}</span>
             </div>
           </motion.div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 0.6, y: 0 } : {}}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.5, duration: 0.6 }}
             className="text-sm leading-relaxed max-w-md"
-            style={{ fontFamily: settings.bodyFont }}
+            style={{ 
+              fontFamily: "Sk-Modernist, sans-serif",
+              fontWeight: 400,
+              color: "#B8B8B8",
+            }}
           >
             {project.description}
           </motion.p>
-
-          <motion.div
-            initial={{ width: 0 }}
-            animate={isInView ? { width: isHovered ? "100px" : "60px" } : {}}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="h-px"
-            style={{ backgroundColor: "currentColor", opacity: 0.3 }}
-          />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -109,8 +119,13 @@ const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
               onClick={() => onProjectClick(project.id)}
               className="group/btn inline-flex items-center gap-3 text-sm tracking-[0.1em] uppercase cursor-pointer"
               whileHover={{ x: 10 }}
+              style={{
+                fontFamily: "Sk-Modernist Bold, sans-serif",
+                fontWeight: 700,
+                color: "#242222",
+              }}
             >
-              <span className="opacity-60 group-hover/btn:opacity-100 transition-opacity">View Project</span>
+              <span className="group-hover/btn:text-[#BBFF00] transition-colors">View Project</span>
               <motion.div animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
                 <ArrowRight size={14} />
               </motion.div>
@@ -124,12 +139,48 @@ const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
             className="flex gap-8 pt-4"
           >
             <div>
-              <p className="text-xs tracking-[0.2em] uppercase opacity-40 mb-1">Area</p>
-              <p className="text-sm font-light">{project.area}</p>
+              <p 
+                className="text-xs tracking-[0.2em] uppercase mb-1"
+                style={{
+                  fontFamily: "Sk-Modernist, sans-serif",
+                  fontWeight: 400,
+                  color: "#B8B8B8",
+                }}
+              >
+                Area
+              </p>
+              <p 
+                className="text-sm"
+                style={{
+                  fontFamily: "Sk-Modernist Bold, sans-serif",
+                  fontWeight: 700,
+                  color: "#242222",
+                }}
+              >
+                {project.area}
+              </p>
             </div>
             <div>
-              <p className="text-xs tracking-[0.2em] uppercase opacity-40 mb-1">Duration</p>
-              <p className="text-sm font-light">{project.duration}</p>
+              <p 
+                className="text-xs tracking-[0.2em] uppercase mb-1"
+                style={{
+                  fontFamily: "Sk-Modernist, sans-serif",
+                  fontWeight: 400,
+                  color: "#B8B8B8",
+                }}
+              >
+                Duration
+              </p>
+              <p 
+                className="text-sm"
+                style={{
+                  fontFamily: "Sk-Modernist Bold, sans-serif",
+                  fontWeight: 700,
+                  color: "#242222",
+                }}
+              >
+                {project.duration}
+              </p>
             </div>
           </motion.div>
         </motion.div>
@@ -137,11 +188,6 @@ const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
         {/* Image */}
         <motion.div ref={imageRef} className="md:col-span-7 relative" style={{ scale, opacity }}>
           <div className="relative">
-            <motion.div
-              className="absolute inset-0 bg-black/5 blur-2xl"
-              animate={isHovered ? { scale: 1.05, opacity: 0.3 } : { scale: 1, opacity: 0.1 }}
-              transition={{ duration: 0.6 }}
-            />
             <motion.div
               className="relative aspect-[4/3] overflow-hidden bg-black/5 cursor-pointer"
               onClick={() => onProjectClick(project.id)}
@@ -169,47 +215,25 @@ const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
                   initial={{ y: 20 }}
                   animate={isHovered ? { y: 0 } : { y: 20 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
+                  style={{
+                    fontFamily: "Sk-Modernist Bold, sans-serif",
+                    fontWeight: 700,
+                  }}
                 >
                   <span className="text-sm tracking-[0.1em] uppercase">Explore</span>
                   <motion.div
-                    className="w-10 h-10 border border-white rounded-full flex items-center justify-center"
+                    className="w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: "#BBFF00" }}
                     whileHover={{ scale: 1.2, rotate: 90 }}
                   >
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} style={{ color: "#242222" }} />
                   </motion.div>
                 </motion.div>
               </motion.div>
-              <motion.div
-                className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-white"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={isHovered ? { opacity: 0.3, scale: 1 } : { opacity: 0, scale: 0 }}
-                transition={{ duration: 0.4 }}
-              />
-              <motion.div
-                className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-white"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={isHovered ? { opacity: 0.3, scale: 1 } : { opacity: 0, scale: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-              />
             </motion.div>
-            <motion.div
-              className="absolute -bottom-4 -right-4 w-24 h-24 border"
-              style={{ borderColor: "currentColor", opacity: 0.1 }}
-              animate={isHovered ? { scale: 1.1, rotate: 45 } : { scale: 1, rotate: 0 }}
-              transition={{ duration: 0.6 }}
-            />
           </div>
         </motion.div>
       </div>
-
-      <motion.div
-        className="absolute -bottom-20 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(to right, transparent, currentColor, transparent)", opacity: 0.1 }}
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.5, duration: 1.2 }}
-      />
     </motion.div>
   );
 }
@@ -221,7 +245,7 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
     <section
       id="work"
       className={`${settings.sectionPadding || "py-24"} md:py-32 px-6 md:px-12 relative transition-colors duration-500`}
-      style={{ backgroundColor: isDark ? settings.darkBg : settings.lightBg || "#F5F5F5" }}
+      style={{ backgroundColor: isDark ? settings.darkBg || "#242222" : settings.lightBg || "#F5F5F5" }}
     >
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
@@ -232,27 +256,28 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
           className="mb-20 md:mb-32"
         >
           <div className="flex items-center gap-6 mb-6">
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "60px" }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="h-px"
-              style={{ backgroundColor: settings.primaryColor }}
-            />
             <motion.span
               initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 0.6, x: 0 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className={`text-xs tracking-[0.3em] uppercase ${isDark ? "text-white/50" : "text-[#242222]/50"}`}
+              className="text-xs tracking-[0.3em] uppercase"
+              style={{
+                fontFamily: "Sk-Modernist, sans-serif",
+                fontWeight: 400,
+                color: "#B8B8B8",
+              }}
             >
               Portfolio
             </motion.span>
           </div>
           <h2
-            className="text-4xl md:text-6xl font-light tracking-tight"
-            style={{ fontFamily: settings.headingFont, fontWeight: settings.headingWeight }}
+            className="text-4xl md:text-6xl tracking-tight"
+            style={{ 
+              fontFamily: "Sk-Modernist Bold, sans-serif",
+              fontWeight: 700,
+              color: "#242222",
+            }}
           >
             Selected Works
           </h2>
@@ -281,18 +306,31 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
             href="/projects"
             className="group inline-flex items-center gap-4 text-sm tracking-[0.15em] uppercase"
             whileHover={{ gap: "24px" }}
+            style={{
+              fontFamily: "Sk-Modernist Bold, sans-serif",
+              fontWeight: 700,
+              color: "#242222",
+            }}
           >
-            <span>View All Projects</span>
-            <motion.div
-              className="w-12 h-12 border-2 rounded-full flex items-center justify-center transition-colors"
+                        <span 
+              className="text-sm group-hover:text-[#BBFF00] transition-colors"
               style={{
-                borderColor: settings.primaryColor,
-                backgroundColor: isDark ? `${settings.primaryColor}10` : `${settings.primaryColor}20`,
+                fontFamily: "Manrope, sans-serif",
+                fontWeight: 800,
+                color: "#242222",
+              }}
+            >
+              View All Projects
+            </span>
+            <motion.div
+              className="w-12 h-12 rounded-full flex items-center justify-center transition-colors"
+              style={{
+                backgroundColor: "#BBFF00",
               }}
               whileHover={{ rotate: 90, scale: 1.1 }}
               transition={{ duration: 0.3 }}
             >
-              <ArrowRight size={16} style={{ color: settings.primaryColor }} />
+              <ArrowRight size={16} style={{ color: "#242222" }} />
             </motion.div>
           </motion.a>
         </motion.div>

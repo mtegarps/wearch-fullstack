@@ -35,7 +35,7 @@ export function Footer({ isDark, contact, settings }: FooterProps) {
               {settings?.tagline || "Architecture Studio · Bandung"}
             </motion.p>
             <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 0.4 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-xs">
-              Est. {settings?.established || "2018"}
+              {settings?.established || "2018"}
             </motion.p>
           </div>
 
