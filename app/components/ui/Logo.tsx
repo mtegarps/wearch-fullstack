@@ -33,7 +33,7 @@ export function Logo({ variant = "light" }: LogoProps) {
             fontWeight: 700,
           }}
         >
-          Wearch Studio
+          wearch studio
         </span>
         <span
           className={`text-[10px] tracking-[0.15em] uppercase ${subTextColor} mt-0.5`}

@@ -66,10 +66,8 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
     }
   };
 
-  // Hero background follows theme
-  const heroBgColor = isDark
-    ? settings.darkBg || "#242222"
-    : settings.lightBg || "#F5F5F5";
+  // Hero background always dark
+  const heroBgColor = "#242222";
 
   // Check if video is YouTube
   const isYouTube = settings.heroBgVideo && (
@@ -165,7 +163,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
               className="text-xs md:text-sm tracking-[0.3em] uppercase mb-8"
               style={{
                 fontFamily: "Sk-Modernist, sans-serif",
-                color: isDark ? "rgba(255,255,255,0.4)" : "rgba(36,34,34,0.4)",
+                color: "rgba(255,255,255,0.4)",
               }}
               animate={{ opacity: [0.4, 0.6, 0.4] }}
               transition={{ duration: 3, repeat: Infinity }}
@@ -183,7 +181,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             style={{
               fontFamily: "Sk-Modernist Bold, sans-serif",
               fontWeight: "700",
-              color: isDark ? "#FFFFFF" : "#242222",
+              color: "#FFFFFF",
             }}
           >
             {mainTitle}
@@ -215,60 +213,41 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             style={{
               fontFamily: "Sk-Modernist, sans-serif",
               fontWeight: "400",
-              color: isDark ? "rgba(255,255,255,0.6)" : "rgba(36,34,34,0.6)",
+              color: "rgba(255,255,255,0.6)",
             }}
           >
             {settings.heroSubtitle}
           </motion.p>
 
-          {/* CTA Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-          >
-            <motion.a
-              href="#work"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-3 px-8 py-4 text-sm tracking-[0.1em] uppercase relative overflow-hidden"
-              style={{
-                fontFamily: "Sk-Modernist Bold, sans-serif",
-                fontWeight: "700",
-                backgroundColor: settings.buttonBg || settings.primaryColor,
-                color: settings.buttonText || settings.darkText,
-                borderRadius: settings.buttonRadius || "0px",
-              }}
-            >
-              <motion.div
-                className="absolute inset-0"
-                style={{
-                  backgroundColor: settings.buttonHoverBg || settings.darkBg,
-                }}
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.4 }}
-              />
-              <span
-                className="relative z-10 group-hover:text-[var(--hover-text)]"
-                style={
-                  {
-                    "--hover-text":
-                      settings.buttonHoverText || settings.primaryColor,
-                  } as React.CSSProperties
-                }
-              >
-                {settings.heroButtonText}
-              </span>
-              <motion.span
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="relative z-10"
-              >
-                <ArrowRight size={16} />
-              </motion.span>
-            </motion.a>
-          </motion.div>
+{/* CTA - Our Projects dengan Triangle */}
+<motion.div
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1, delay: 0.8 }}
+  className="flex flex-col items-center gap-6"
+>
+  <motion.a
+    href="#work"
+    whileHover={{ y: -5 }}
+    className="text-sm md:text-base lg:text-lg tracking-tight text-white/80 hover:text-white transition-colors"
+    style={{
+      fontFamily: "Sk-Modernist Bold, sans-serif",
+      fontWeight: "700",
+    }}
+  >
+    our projects
+  </motion.a>
+  
+  {/* Triangle Arrow */}
+  <motion.div
+    animate={{ y: [0, 10, 0] }}
+    transition={{ duration: 1.5, repeat: Infinity }}
+    className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px]"
+    style={{
+      borderTopColor: "#BBFF00",
+    }}
+  />
+</motion.div>
         </div>
       )}
 
@@ -294,10 +273,6 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
-            <ChevronDown
-              size={20}
-              className={isDark ? "text-white/40" : "text-[#242222]/40"}
-            />
           </motion.div>
         </motion.div>
       )}
