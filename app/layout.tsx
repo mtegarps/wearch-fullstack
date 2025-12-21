@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     description: 'Wearch Studio',
     url: 'https://wearch.id',
     siteName: 'Wearch',
-    images: ['/favicon.ico'], 
+    images: ['/logo.png'], // Ganti ke PNG
     locale: 'id_ID',
     type: 'website',
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Wearch',
     description: 'Wearch Studio',
-    images: ['/favicon.ico'],
+    images: ['/logo.png'], // Ganti ke PNG
   },
   metadataBase: new URL('https://wearch.id'),
 };
