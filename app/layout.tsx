@@ -127,6 +127,9 @@ export default function RootLayout({
   return (
     <html lang="id">
       <head>
+        {/* Google Site Verification - TAMBAHAN BARU */}
+        <meta name="google-site-verification" content="YP0Z9oaWwz6EHGuEwUgr49FSTxd_gc2qyBZcL-nD3bs" />
+        
         {/* JSON-LD Schema for Rich Results - LOCAL BUSINESS */}
         <script
           type="application/ld+json"
