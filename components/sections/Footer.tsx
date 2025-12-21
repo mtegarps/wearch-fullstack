@@ -26,7 +26,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex items-center gap-3"
+            className="flex flex-col items-center gap-3"
           >
             {settings.logoUrl ? (
               <img
@@ -41,14 +41,12 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
                 <path d="M64 20 L79 80 L64 80 Z" fill="#C8FF00" />
               </svg>
             )}
-            <div className="flex flex-col -mt-1">
-              <span
-                className="text-sm font-bold tracking-tight leading-none"
-                style={{ fontFamily: settings.navFont, fontWeight: 700, color: "#2E2E2E" }}
-              >
-                {settings.siteName}
-              </span>
-            </div>
+            <span
+              className="text-sm font-bold tracking-tight leading-none"
+              style={{ fontFamily: settings.navFont, fontWeight: 700, color: "#2E2E2E" }}
+            >
+              {settings.siteName}
+            </span>
           </motion.div>
 
           {/* Right: Icons and Back to Top */}
