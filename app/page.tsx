@@ -115,13 +115,13 @@ export default function WearchLanding() {
     document.head.appendChild(script);
   }, []);
 
-  // Loading state
+// Loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-[#242222] flex items-center justify-center">
         <div className="text-center">
           <img 
-            src={settings?.logoUrl} 
+            src="/favicon.ico" 
             alt="Logo" 
             className="mx-auto mb-4 h-16 w-auto animate-pulse"
           />
