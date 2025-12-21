@@ -35,11 +35,11 @@ function ProjectItem({ project, index, onProjectClick, settings }: ProjectItemPr
   return (
     <motion.div
       ref={ref}
-      className="relative mb-20 md:mb-32"
+      className="relative mb-12 md:mb-16"
       style={{ y, opacity }}
     >
-      {/* Image Gallery Container - Full Width */}
-      <div className="relative w-full">
+      {/* Image Gallery Container - With Padding */}
+      <div className="relative w-full px-6 md:px-12 lg:px-16">
         {/* Scroll Container - Smooth free scroll with gap */}
         <div
           className="w-full overflow-x-auto overflow-y-hidden scroll-smooth"
@@ -64,9 +64,9 @@ function ProjectItem({ project, index, onProjectClick, settings }: ProjectItemPr
                 key={idx}
                 className="flex-shrink-0 w-full"
               >
-                {/* Image Container - Full Height */}
+                {/* Image Container - Reduced Height */}
                 <motion.div
-                  className="relative w-full h-[85vh] md:h-[90vh] group cursor-pointer"
+                  className="relative w-full h-[40vh] md:h-[45vh] group cursor-pointer rounded-sm overflow-hidden"
                   onClick={() => onProjectClick(project.id)}
                   initial={{ opacity: 0, scale: 0.98 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -308,7 +308,7 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-20 md:mb-32 lg:mb-40 px-6 md:px-12 lg:px-16 text-center"
+            className="mb-12 md:mb-16 lg:mb-20 px-6 md:px-12 lg:px-16 text-center"
           >
             <h2
               className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tight leading-[0.95]"
