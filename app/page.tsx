@@ -120,11 +120,11 @@ export default function WearchLanding() {
     return (
       <div className="min-h-screen bg-[#242222] flex items-center justify-center">
         <div className="text-center">
-          <svg width="60" height="60" viewBox="0 0 100 100" fill="none" className="mx-auto mb-4 animate-pulse">
-            <path d="M20 20 L35 80 L20 80 Z" fill="#BBFF00" />
-            <path d="M42 20 L57 80 L42 80 Z" fill="#BBFF00" />
-            <path d="M64 20 L79 80 L64 80 Z" fill="#BBFF00" />
-          </svg>
+          <img 
+            src={settings?.logoUrl} 
+            alt="Logo" 
+            className="mx-auto mb-4 h-16 w-auto animate-pulse"
+          />
           <p className="text-white/40 text-sm">Loading...</p>
         </div>
       </div>
