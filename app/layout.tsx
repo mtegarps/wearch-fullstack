@@ -25,15 +25,22 @@ export const metadata: Metadata = {
     description: 'Wearch Studio',
     url: 'https://wearch.id',
     siteName: 'Wearch',
-    images: ['/logo.png'], // Ganti ke PNG
+    images: [
+      {
+        url: 'https://res.cloudinary.com/dncwjb46j/image/upload/v1766319066/Logo_txeq7u.png',
+        width: 885,
+        height: 677,
+        alt: 'Wearch Studio',
+      }
+    ],
     locale: 'id_ID',
     type: 'website',
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Wearch',
     description: 'Wearch Studio',
-    images: ['/logo.png'], // Ganti ke PNG
+    images: ['https://res.cloudinary.com/dncwjb46j/image/upload/v1766319066/Logo_txeq7u.png'],
   },
   metadataBase: new URL('https://wearch.id'),
 };
