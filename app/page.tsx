@@ -179,7 +179,7 @@ export default function WearchLanding() {
       />
 
       {/* About Section */}
-      <AboutSection settings={displaySettings} isDark={isDark} team={team} />
+      <AboutSection settings={displaySettings} isDark={isDark} />
 
       {/* Footer */}
       <Footer settings={displaySettings} isDark={isDark} contact={displayContact} />

@@ -2,8 +2,14 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Settings } from "@/lib/types";
 
-export default function ServicesSection() {
+interface AboutSectionProps {
+  settings: Settings;
+  isDark: boolean;
+}
+
+export default function AboutSection({ settings, isDark }: AboutSectionProps) {
   const services = [
     {
       iconPath: "/uploads/general/residence.png", 
@@ -30,7 +36,9 @@ export default function ServicesSection() {
   return (
     <section
       className="py-20 px-6 md:px-12 relative overflow-hidden"
-      style={{ backgroundColor: "#242222" }}
+      style={{ 
+        backgroundColor: "#242222"
+      }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Header */}
@@ -44,10 +52,10 @@ export default function ServicesSection() {
           <p
             className="tracking-tight"
             style={{
-              fontFamily: "Sk-Modernist Bold, sans-serif",
+              fontFamily: settings.headingFont || "Sk-Modernist Bold, sans-serif",
               color: "rgba(255, 255, 255, 0.8)",
               fontWeight: 700,
-              fontSize: "16px",
+              fontSize: `calc(16px * ${settings.fontSizeMultiplier || 1})`,
             }}
           >
             our services
@@ -65,7 +73,7 @@ export default function ServicesSection() {
               transition={{ duration: 0.6, delay: idx * 0.1 }}
               className="flex flex-col items-center"
             >
-              {/* Icon - Smaller size */}
+              {/* Icon */}
               <div className="mb-8 w-[50px] h-[50px] relative flex items-center justify-center">
                 <Image
                   src={service.iconPath}
@@ -82,7 +90,7 @@ export default function ServicesSection() {
                 <span
                   className="text-base"
                   style={{
-                    fontFamily: "Manrope, sans-serif",
+                    fontFamily: settings.bodyFont || "Manrope, sans-serif",
                     color: "#FFFFFF",
                     fontWeight: 700,
                   }}
@@ -92,7 +100,7 @@ export default function ServicesSection() {
                 <span
                   className="text-base"
                   style={{
-                    fontFamily: "Manrope, sans-serif",
+                    fontFamily: settings.bodyFont || "Manrope, sans-serif",
                     color: "#FFFFFF",
                     fontWeight: 500,
                   }}
@@ -102,7 +110,7 @@ export default function ServicesSection() {
                 <span
                   className="text-base"
                   style={{
-                    fontFamily: "Manrope, sans-serif",
+                    fontFamily: settings.bodyFont || "Manrope, sans-serif",
                     fontWeight: 500,
                     color: "#FFFFFF",
                     lineHeight: "1.6",
@@ -128,9 +136,9 @@ export default function ServicesSection() {
             <p
               className="text-6xl sm:text-7xl md:text-8xl mb-3"
               style={{
-                fontFamily: "Manrope, sans-serif",
+                fontFamily: settings.headingFont || "Manrope, sans-serif",
                 fontWeight: 700,
-                color: "#BBFF00",
+                color: settings.accentColor || "#BBFF00",
                 lineHeight: "1",
               }}
             >
@@ -139,7 +147,7 @@ export default function ServicesSection() {
             <p
               className="text-sm md:text-base tracking-[0.3em]"
               style={{
-                fontFamily: "Manrope, sans-serif",
+                fontFamily: settings.bodyFont || "Manrope, sans-serif",
                 fontWeight: 400,
                 color: "#FFFFFF",
               }}
@@ -153,9 +161,9 @@ export default function ServicesSection() {
             <p
               className="text-6xl sm:text-7xl md:text-8xl mb-3"
               style={{
-                fontFamily: "Manrope, sans-serif",
+                fontFamily: settings.headingFont || "Manrope, sans-serif",
                 fontWeight: 700,
-                color: "#BBFF00",
+                color: settings.accentColor || "#BBFF00",
                 lineHeight: "1",
               }}
             >
@@ -164,9 +172,9 @@ export default function ServicesSection() {
             <p
               className="text-sm md:text-base tracking-[0.3em]"
               style={{
-                fontFamily: "Manrope, sans-serif",
+                fontFamily: settings.bodyFont || "Manrope, sans-serif",
                 fontWeight: 400,
-                color: "#FFFFFF",
+                color: isDark ? "#FFFFFF" : "#242222",
               }}
             >
               years service
