@@ -35,10 +35,10 @@ export default function Navigation({
   }, []);
 
   const navItems = [
-    { label: "Work", href: "#work" },
+    { label: "Projects", href: "#work" },
     { label: "About", href: "#about" },
     { label: "Articles", href: "/articles" },
-    { label: "Contact", href: "#contact" }
+    { label: "", href: "#contact" }
   ];
 
   return (

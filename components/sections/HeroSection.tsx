@@ -153,6 +153,22 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             settings.heroContentWidth || "max-w-5xl"
           } ${getLayoutAlignment()}`}
         >
+          {/* Logo */}
+          {settings.logoUrl && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.1 }}
+              className="mb-8 flex justify-center"
+            >
+              <img
+                src={settings.logoUrl}
+                alt="Logo"
+                className="h-16 md:h-20 lg:h-24 w-auto object-contain"
+              />
+            </motion.div>
+          )}
+
           {/* Tagline */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -219,35 +235,35 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             {settings.heroSubtitle}
           </motion.p>
 
-{/* CTA - Our Projects dengan Triangle */}
-<motion.div
-  initial={{ opacity: 0, y: 30 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1, delay: 0.8 }}
-  className="flex flex-col items-center gap-6"
->
-  <motion.a
-    href="#work"
-    whileHover={{ y: -5 }}
-    className="text-sm md:text-base lg:text-lg tracking-tight text-white/80 hover:text-white transition-colors"
-    style={{
-      fontFamily: "Sk-Modernist Bold, sans-serif",
-      fontWeight: "700",
-    }}
-  >
-    our projects
-  </motion.a>
-  
-  {/* Triangle Arrow */}
-  <motion.div
-    animate={{ y: [0, 10, 0] }}
-    transition={{ duration: 1.5, repeat: Infinity }}
-    className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px]"
-    style={{
-      borderTopColor: "#BBFF00",
-    }}
-  />
-</motion.div>
+          {/* CTA - Our Projects dengan Triangle */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="flex flex-col items-center gap-6"
+          >
+            <motion.a
+              href="#work"
+              whileHover={{ y: -5 }}
+              className="text-sm md:text-base lg:text-lg tracking-tight text-white/80 hover:text-white transition-colors"
+              style={{
+                fontFamily: "Sk-Modernist Bold, sans-serif",
+                fontWeight: "700",
+              }}
+            >
+              our projects
+            </motion.a>
+            
+            {/* Triangle Arrow */}
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px]"
+              style={{
+                borderTopColor: "#BBFF00",
+              }}
+            />
+          </motion.div>
         </div>
       )}
 

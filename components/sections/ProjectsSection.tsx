@@ -302,28 +302,28 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
         style={{ backgroundColor: "#242222" }}
       >
         <div className="max-w-[1920px] mx-auto relative">
-          {/* Header - More Aesthetic */}
+{/* Header - Left Aligned, Smaller */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-12 md:mb-16 lg:mb-20 px-6 md:px-12 lg:px-16 text-center"
+            className="mb-12 md:mb-16 px-6 md:px-12 lg:px-16"
           >
             <h2
-              className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl tracking-tight leading-[0.95]"
+              className="text-3xl md:text-4xl lg:text-5xl tracking-tight leading-tight"
               style={{
                 fontFamily: "Sk-Modernist Bold, sans-serif",
-                fontWeight: 500,
+                fontWeight: 700,
                 color: "#FFFFFF",
               }}
             >
-              Our Projects
+              our projects
             </h2>
             <motion.div
-              className="w-24 h-1 bg-[#BBFF00] mx-auto mt-8 md:mt-12"
+              className="w-16 h-1 bg-[#BBFF00] mt-4"
               initial={{ width: 0 }}
-              whileInView={{ width: 96 }}
+              whileInView={{ width: 64 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3, duration: 0.8 }}
             />

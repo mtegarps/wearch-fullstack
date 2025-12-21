@@ -12,208 +12,123 @@ interface FooterProps {
 export default function Footer({ settings, isDark, contact }: FooterProps) {
   return (
     <footer
-      className="py-16 px-6 md:px-12 relative overflow-hidden transition-colors duration-500"
+      className="relative overflow-hidden transition-colors duration-500"
       style={{
-        backgroundColor: isDark ? settings.darkBg : settings.mutedText,
-        color: isDark ? "white" : settings.darkText,
+        backgroundColor: "#B8B8B8",
+        color: "#2E2E2E",
       }}
     >
-      {/* Background Pattern */}
-      <motion.div
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `radial-gradient(circle at 2px 2px, ${isDark ? "white" : "black"} 1px, transparent 0)`,
-          backgroundSize: "40px 40px",
-        }}
-        animate={{ backgroundPosition: ["0px 0px", "40px 40px"] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Top Section */}
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
-          {/* Brand */}
+      <div className="max-w-full mx-auto relative z-10">
+        {/* Top Row - Logo and Icons */}
+        <div className="flex items-start justify-between px-12 pt-10 pb-16">
+          {/* Left: Logo */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="md:col-span-2"
+            className="flex items-center gap-3"
           >
-            <motion.div className="flex items-center gap-3 mb-6" whileHover={{ scale: 1.05 }}>
-              <div>
-                {settings.logoUrl ? (
-                  <img
-                    src={settings.logoUrl}
-                    alt={settings.siteName}
-                    style={{ width: settings.logoWidth || 40, height: settings.logoHeight || 40 }}
-                  />
-                ) : (
-                  <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
-                    <path d="M20 20 L35 80 L20 80 Z" fill={settings.secondaryColor} />
-                    <path d="M42 20 L57 80 L42 80 Z" fill={settings.secondaryColor} />
-                    <path d="M64 20 L79 80 L64 80 Z" fill={settings.secondaryColor} />
-                  </svg>
-                )}
-              </div>
-              <div className="flex flex-col">
-                <span
-                  className="text-lg font-bold tracking-tight leading-none"
-                  style={{ fontFamily: settings.navFont, fontWeight: 700 }}
-                >
-                  {settings.siteName}
-                </span>
-                <span
-                  className="text-[10px] tracking-[0.15em] uppercase mt-0.5 opacity-40"
-                  style={{ fontFamily: settings.navFont, fontWeight: 500 }}
-                >
-                  {settings.established}
-                </span>
-              </div>
-            </motion.div>
-            <p className={`text-sm leading-relaxed max-w-sm ${isDark ? "text-white/50" : "opacity-60"}`}>
-              {settings.footerDescription}
-            </p>
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "80px" }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="h-px mt-8"
-              style={{ backgroundColor: isDark ? `${settings.primaryColor}4D` : `${settings.darkText}4D` }}
-            />
+            {settings.logoUrl ? (
+              <img
+                src={settings.logoUrl}
+                alt={settings.siteName}
+                style={{ width: 65, height: 45 }}
+              />
+            ) : (
+              <svg width="50" height="50" viewBox="0 0 100 100" fill="none">
+                <path d="M20 20 L35 80 L20 80 Z" fill="#C8FF00" />
+                <path d="M42 20 L57 80 L42 80 Z" fill="#C8FF00" />
+                <path d="M64 20 L79 80 L64 80 Z" fill="#C8FF00" />
+              </svg>
+            )}
+            <div className="flex flex-col -mt-1">
+              <span
+                className="text-sm font-bold tracking-tight leading-none"
+                style={{ fontFamily: settings.navFont, fontWeight: 700, color: "#2E2E2E" }}
+              >
+                {settings.siteName}
+              </span>
+            </div>
           </motion.div>
 
-          {/* Quick Links */}
+          {/* Right: Icons and Back to Top */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            className="flex items-center gap-6"
           >
-            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 opacity-50">Quick Links</h4>
-            <ul className="space-y-3">
-              {["Work", "About", "Services", "Contact"].map((link, idx) => (
-                <motion.li
-                  key={link}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 + idx * 0.1 }}
-                >
-                  <motion.a
-                    href={`#${link.toLowerCase()}`}
-                    className={`text-sm transition-colors inline-block ${isDark ? "text-white/60 hover:text-white" : "opacity-60 hover:opacity-100"}`}
-                    whileHover={{ x: 5 }}
-                  >
-                    {link}
-                  </motion.a>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
+            {/* Phone Icon - Filled */}
+            <motion.a
+              href={`tel:${contact.phone.replace(/\s/g, '')}`}
+              className="transition-opacity hover:opacity-70"
+              whileHover={{ scale: 1.05 }}
+            >
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#2E2E2E">
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+              </svg>
+            </motion.a>
+            
+            {/* Location Pin Icon - Filled */}
+            <motion.a
+              href="#"
+              className="transition-opacity hover:opacity-70"
+              whileHover={{ scale: 1.05 }}
+            >
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#2E2E2E">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+              </svg>
+            </motion.a>
+            
+            {/* Email Icon - Filled */}
+            <motion.a
+              href={`mailto:${contact.email}`}
+              className="transition-opacity hover:opacity-70"
+              whileHover={{ scale: 1.05 }}
+            >
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="5" width="18" height="14" rx="2" fill="#2E2E2E"/>
+                <path d="M3 7 L12 13 L21 7" stroke="#B8B8B8" strokeWidth="1.5" fill="none"/>
+              </svg>
+            </motion.a>
+            
+            {/* Instagram Icon - Rounded Square with Camera */}
+            <motion.a
+              href="#"
+              className="transition-opacity hover:opacity-70"
+              whileHover={{ scale: 1.05 }}
+            >
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="18" height="18" rx="5" fill="#2E2E2E"/>
+                <circle cx="12" cy="12" r="4" stroke="#B8B8B8" strokeWidth="1.5" fill="none"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="#B8B8B8"/>
+              </svg>
+            </motion.a>
 
-          {/* Contact */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            <h4 className="text-xs tracking-[0.2em] uppercase mb-6 opacity-50">Get In Touch</h4>
-            <ul className="space-y-3">
-              <motion.li whileHover={{ x: 5 }}>
-                <a
-                  href={`mailto:${contact.email}`}
-                  className={`text-sm transition-colors block ${isDark ? "text-white/60 hover:text-white" : "opacity-60 hover:opacity-100"}`}
-                >
-                  {contact.email}
-                </a>
-              </motion.li>
-              <motion.li whileHover={{ x: 5 }}>
-                <a
-                  href={`tel:${contact.phone.replace(/\s/g, '')}`}
-                  className={`text-sm transition-colors block ${isDark ? "text-white/60 hover:text-white" : "opacity-60 hover:opacity-100"}`}
-                >
-                  {contact.phone}
-                </a>
-              </motion.li>
-              <motion.li whileHover={{ x: 5 }}>
-                <span className={`text-sm block ${isDark ? "text-white/60" : "opacity-60"}`}>
-                  {contact.address}
-                </span>
-              </motion.li>
-            </ul>
+            {/* Back to Top Button */}
+            <motion.button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center gap-2 text-xs font-medium tracking-wide transition-opacity hover:opacity-70 ml-4"
+              style={{ color: "#C8FF00" }}
+              whileHover={{ scale: 1.03 }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="18 15 12 9 6 15"/>
+              </svg>
+              <span className="lowercase">back to top</span>
+            </motion.button>
           </motion.div>
         </div>
 
-        {/* Divider */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2 }}
-          className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent mb-12"
-        />
-
-        {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className={`flex flex-wrap justify-center md:justify-start gap-6 text-xs ${isDark ? "text-white/40" : "opacity-40"}`}
-          >
-            <motion.span whileHover={{ opacity: 1 }} className="tracking-[0.15em] uppercase">
-              {settings.copyrightText || `© ${new Date().getFullYear()} ${settings.siteName}`}
-            </motion.span>
-            <span className="opacity-30">•</span>
-            <motion.a
-              href="#"
-              className="tracking-[0.15em] uppercase hover:opacity-70 transition-opacity"
-              whileHover={{ y: -2 }}
-            >
-              Privacy Policy
-            </motion.a>
-            <span className="opacity-30">•</span>
-            <motion.a
-              href="#"
-              className="tracking-[0.15em] uppercase hover:opacity-70 transition-opacity"
-              whileHover={{ y: -2 }}
-            >
-              Terms of Service
-            </motion.a>
-          </motion.div>
-
-          {/* Social Icons */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="flex gap-4"
-          >
-            {["IG", "LI", "BE"].map((social, idx) => (
-              <motion.a
-                key={social}
-                href="#"
-                className={`w-10 h-10 border flex items-center justify-center text-xs tracking-wider transition-all ${
-                  isDark
-                    ? "border-white/20 hover:border-white/40 hover:bg-white hover:text-black"
-                    : "border-black/20 hover:border-black/40 hover:bg-black hover:text-white"
-                }`}
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.6 + idx * 0.1 }}
-              >
-                {social}
-              </motion.a>
-            ))}
-          </motion.div>
+        {/* Bottom Row - Copyright and Powered By */}
+        <div className="flex items-center justify-between px-12 pb-8">
+          <div className="text-[11px] font-medium tracking-wide uppercase" style={{ color: "#2E2E2E" }}>
+            {settings.copyrightText || `COPYRIGHT © ${new Date().getFullYear()} ${settings.siteName}`}
+          </div>
+          
+          <div className="text-[11px] font-medium tracking-wide uppercase" style={{ color: "#2E2E2E" }}>
+            POWERED BY {settings.siteName}
+          </div>
         </div>
       </div>
     </footer>
