@@ -20,7 +20,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
     >
       <div className="max-w-full mx-auto relative z-10">
         {/* Top Row - Logo and Icons */}
-        <div className="flex items-start justify-between px-12 pt-10 pb-16">
+        <div className="flex flex-col md:flex-row items-start md:items-start justify-between px-6 md:px-12 pt-8 md:pt-10 pb-10 md:pb-16 gap-8 md:gap-0">
           {/* Left: Logo */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -56,7 +56,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex items-center gap-6"
+            className="flex flex-wrap items-center gap-4 md:gap-6"
           >
             {/* Phone Icon - Filled */}
             <motion.a
@@ -64,7 +64,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
               className="transition-opacity hover:opacity-70"
               whileHover={{ scale: 1.05 }}
             >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="#2E2E2E">
+              <svg className="w-7 h-7 md:w-[30px] md:h-[30px]" viewBox="0 0 24 24" fill="#2E2E2E">
                 <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
               </svg>
             </motion.a>
@@ -75,7 +75,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
               className="transition-opacity hover:opacity-70"
               whileHover={{ scale: 1.05 }}
             >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="#2E2E2E">
+              <svg className="w-7 h-7 md:w-[30px] md:h-[30px]" viewBox="0 0 24 24" fill="#2E2E2E">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
               </svg>
             </motion.a>
@@ -86,7 +86,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
               className="transition-opacity hover:opacity-70"
               whileHover={{ scale: 1.05 }}
             >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <svg className="w-7 h-7 md:w-[30px] md:h-[30px]" viewBox="0 0 24 24" fill="none">
                 <rect x="3" y="5" width="18" height="14" rx="2" fill="#2E2E2E"/>
                 <path d="M3 7 L12 13 L21 7" stroke="#B8B8B8" strokeWidth="1.5" fill="none"/>
               </svg>
@@ -98,7 +98,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
               className="transition-opacity hover:opacity-70"
               whileHover={{ scale: 1.05 }}
             >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <svg className="w-7 h-7 md:w-[30px] md:h-[30px]" viewBox="0 0 24 24" fill="none">
                 <rect x="3" y="3" width="18" height="18" rx="5" fill="#2E2E2E"/>
                 <circle cx="12" cy="12" r="4" stroke="#B8B8B8" strokeWidth="1.5" fill="none"/>
                 <circle cx="17.5" cy="6.5" r="1" fill="#B8B8B8"/>
@@ -108,7 +108,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
             {/* Back to Top Button */}
             <motion.button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="flex items-center gap-2 text-xs font-medium tracking-wide transition-opacity hover:opacity-70 ml-4"
+              className="flex items-center gap-2 text-xs font-medium tracking-wide transition-opacity hover:opacity-70 md:ml-4"
               style={{ color: "#C8FF00" }}
               whileHover={{ scale: 1.03 }}
             >
@@ -121,7 +121,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
         </div>
 
         {/* Bottom Row - Copyright and Powered By */}
-        <div className="flex items-center justify-between px-12 pb-8">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between px-6 md:px-12 pb-6 md:pb-8 gap-2 md:gap-0">
           <div className="text-[11px] font-medium tracking-wide uppercase" style={{ color: "#2E2E2E" }}>
             {settings.copyrightText || `COPYRIGHT © ${new Date().getFullYear()} ${settings.siteName}`}
           </div>

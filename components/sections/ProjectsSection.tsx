@@ -92,9 +92,9 @@ function ProjectItem({ project, index, onProjectClick, settings }: ProjectItemPr
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.2, duration: 0.6 }}
                       >
-                        <div className="inline-block bg-[#BBFF00]/90 backdrop-blur-sm px-3 py-1.5 md:px-4 md:py-2">
+                        <div className="inline-flex items-center justify-center bg-[#BBFF00]/90 backdrop-blur-sm px-3 py-1.5 md:px-4 md:py-2">
                           <span
-                            className="text-[9px] md:text-[10px] tracking-[0.25em] uppercase font-medium"
+                            className="text-[9px] md:text-[10px] tracking-[0.25em] uppercase font-medium text-center"
                             style={{
                               fontFamily: "Sk-Modernist Bold, sans-serif",
                               fontWeight: 700,
@@ -302,7 +302,7 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
         style={{ backgroundColor: "#242222" }}
       >
         <div className="max-w-[1920px] mx-auto relative">
-{/* Header - Left Aligned, Smaller */}
+          {/* Header - Left Aligned, Smaller */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -343,37 +343,37 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
           </div>
 
           {/* View All CTA */}
-<motion.div
-  initial={{ opacity: 0, y: 30 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.7 }}
-  className="text-center mt-24 md:mt-32 px-6"
->
-  <motion.button
-    onClick={() => setShowAllModal(true)}
-    className="group inline-flex items-center gap-5 text-sm md:text-base tracking-[0.15em] uppercase"
-    whileHover={{ gap: "32px" }}
-    style={{
-      fontFamily: "Sk-Modernist Bold, sans-serif",
-      fontWeight: 700,
-      color: "#FFFFFF",
-    }}
-  >
-    <span className="group-hover:text-[#BBFF00] transition-colors duration-300">
-      View All Projects
-    </span>
-    {/* Triangle Arrow Right */}
-    <motion.div
-      animate={{ x: [0, 5, 0] }}
-      transition={{ duration: 1.5, repeat: Infinity }}
-      className="w-0 h-0 border-t-[15px] border-t-transparent border-b-[15px] border-b-transparent border-l-[18px]"
-      style={{
-        borderLeftColor: "#BBFF00",
-      }}
-    />
-  </motion.button>
-</motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center mt-24 md:mt-32 px-6"
+          >
+            <motion.button
+              onClick={() => setShowAllModal(true)}
+              className="group inline-flex items-center gap-5 text-sm md:text-base tracking-[0.15em] uppercase"
+              whileHover={{ gap: "32px" }}
+              style={{
+                fontFamily: "Sk-Modernist Bold, sans-serif",
+                fontWeight: 700,
+                color: "#FFFFFF",
+              }}
+            >
+              <span className="group-hover:text-[#BBFF00] transition-colors duration-300">
+                View All Projects
+              </span>
+              {/* Triangle Arrow Right */}
+              <motion.div
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="w-0 h-0 border-t-[15px] border-t-transparent border-b-[15px] border-b-transparent border-l-[18px]"
+                style={{
+                  borderLeftColor: "#BBFF00",
+                }}
+              />
+            </motion.button>
+          </motion.div>
         </div>
 
         {/* Hide scrollbar */}

@@ -23,12 +23,15 @@ export default function GlobalEffects({
       {/* Custom Cursor */}
       {settings.enableCursor !== false && (
         <motion.div
-          className="fixed w-4 h-4 pointer-events-none z-50 mix-blend-difference hidden md:block"
+          className="fixed w-4 h-4 pointer-events-none z-[9999] hidden md:block"
           style={{ x: cursorX, y: cursorY }}
         >
           <div
-            className="w-full h-full rounded-full"
-            style={{ backgroundColor: settings.primaryColor || "#BBFF00" }}
+            className="w-full h-full rounded-full ring-2 ring-black/20 shadow-lg"
+            style={{ 
+              backgroundColor: settings.primaryColor || "#BBFF00",
+              opacity: 0.8
+            }}
           />
         </motion.div>
       )}

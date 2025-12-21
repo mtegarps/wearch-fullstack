@@ -20,18 +20,42 @@ export default function Navigation({
   isMenuOpen,
   setIsMenuOpen,
 }: NavigationProps) {
-  // State untuk track hover
-  const [isHovered, setIsHovered] = useState(false);
+  // State untuk track scroll
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Detect scroll position
+  // Detect scroll position dan direction
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+      
+      // Update scroll status
+      setIsScrolled(currentScrollY > 50);
+      
+      // Detect scroll direction
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down
+        setIsScrollingDown(true);
+      } else {
+        // Scrolling up
+        setIsScrollingDown(false);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  // Check if mobile
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const navItems = [
@@ -46,39 +70,36 @@ export default function Navigation({
       {/* Navigation Bar */}
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={{ 
+          opacity: 1, 
+          y: isScrollingDown && !isMobile ? -100 : 0 
+        }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         className={`${settings.navPosition || "fixed"} top-0 left-0 right-0 z-40 transition-all duration-300`}
         style={{
-          height: settings.navHeight || "80px",
-          // Background muncul saat hover atau scroll
-          backgroundColor: isHovered || isScrolled
+          height: isMobile ? "64px" : (settings.navHeight || "80px"),
+          // Di mobile selalu tampil dengan background, di desktop selalu transparan
+          backgroundColor: isMobile
             ? settings.navStyle === "solid"
               ? "#242222"
               : `rgba(36, 34, 34, ${settings.navBgOpacity || 0.9})`
             : "transparent",
-          backdropFilter: (isHovered || isScrolled) && settings.navStyle === "blur" 
+          backdropFilter: isMobile && settings.navStyle === "blur" 
             ? "blur(12px)" 
             : "none",
-          borderBottom: isHovered || isScrolled 
+          borderBottom: isMobile 
             ? "1px solid rgba(255,255,255,0.1)" 
-            : "1px solid transparent",
+            : "none",
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 h-full flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-12 h-full flex justify-between items-center">
           {settings.navShowLogo !== false && (
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="flex flex-col"
-              animate={{
-                opacity: isHovered || isScrolled ? 1 : 0.7,
-              }}
-              transition={{ duration: 0.3 }}
             >
               <span
-                className="text-lg tracking-tight leading-none"
+                className="text-base md:text-lg tracking-tight leading-none"
                 style={{
                   fontFamily: "Sk-Modernist Bold, sans-serif",
                   fontWeight: 700,
@@ -88,7 +109,7 @@ export default function Navigation({
                 {settings.siteName}
               </span>
               <span
-                className="text-[10px] tracking-[0.15em] uppercase mt-0.5"
+                className="text-[9px] md:text-[10px] tracking-[0.15em] uppercase mt-0.5"
                 style={{
                   fontFamily: "Sk-Modernist, sans-serif",
                   fontWeight: 400,
@@ -107,10 +128,6 @@ export default function Navigation({
                 key={item.label}
                 href={item.href}
                 whileHover={{ y: -2 }}
-                animate={{
-                  opacity: isHovered || isScrolled ? 1 : 0.6,
-                }}
-                transition={{ duration: 0.3 }}
                 className="text-sm tracking-[0.1em] uppercase text-white hover:text-[#c8ff00] transition-colors"
                 style={{
                   fontFamily: "Sk-Modernist Bold, sans-serif",
@@ -129,11 +146,7 @@ export default function Navigation({
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            animate={{
-              opacity: isHovered || isScrolled ? 1 : 0.7,
-            }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden w-10 h-10 flex items-center justify-center"
+            className="md:hidden w-10 h-10 flex items-center justify-center text-white"
           >
             {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </motion.button>

@@ -89,7 +89,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
 
   return (
     <section
-      className="relative flex items-center justify-center px-6 md:px-12 pt-24 overflow-hidden"
+      className="relative flex items-center justify-center px-6 md:px-12 pt-16 overflow-hidden"
       style={{
         minHeight: settings.heroHeight || "100vh",
         backgroundColor: heroBgColor,
@@ -159,7 +159,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.1 }}
-              className="mb-8 flex justify-center"
+              className="mb-8 flex justify-center -mt-24"
             >
               <img
                 src={settings.logoUrl}
@@ -174,6 +174,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
+            className="mt-4"
           >
             <motion.p
               className="text-xs md:text-sm tracking-[0.3em] uppercase mb-8"
@@ -193,7 +194,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.4 }}
-            className={`leading-tight mb-8 tracking-tight ${getTitleSizeClass()}`}
+            className={`leading-tight mb-8 mt-24 tracking-tight ${getTitleSizeClass()}`}
             style={{
               fontFamily: "Sk-Modernist Bold, sans-serif",
               fontWeight: "700",
@@ -202,20 +203,15 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
           >
             {mainTitle}
             <br />
-            <motion.span
-              className="inline-block italic"
+            <span
+              className="inline-block"
               style={{ 
-                fontFamily: "Sk-Modernist, sans-serif",
-                fontWeight: "400"
-              }}
-              whileHover={{
-                skewX: -3,
-                x: 10,
-                transition: { duration: 0.3 },
+                fontFamily: "Sk-Modernist Bold, sans-serif",
+                fontWeight: "700"
               }}
             >
               {italicTitle}
-            </motion.span>
+            </span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -223,7 +219,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className={`mb-12 max-w-2xl leading-relaxed ${
+            className={`mb-12 mt-12 max-w-2xl leading-relaxed ${
               settings.heroLayout === "center" ? "mx-auto" : ""
             } ${getSubtitleSizeClass()}`}
             style={{

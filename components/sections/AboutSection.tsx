@@ -36,6 +36,7 @@ export default function AboutSection({ settings, isDark }: AboutSectionProps) {
   return (
     <section
       className="py-20 px-6 md:px-12 relative overflow-hidden"
+      id="about"
       style={{ 
         backgroundColor: "#242222"
       }}
@@ -174,7 +175,7 @@ export default function AboutSection({ settings, isDark }: AboutSectionProps) {
               style={{
                 fontFamily: settings.bodyFont || "Manrope, sans-serif",
                 fontWeight: 400,
-                color: isDark ? "#FFFFFF" : "#242222",
+                color: "#FFFFFF",
               }}
             >
               years service
