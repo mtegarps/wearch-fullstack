@@ -96,7 +96,7 @@ export const metadata: Metadata = {
   
   // Verification (update nanti setelah daftar Google Search Console)
   verification: {
-    google: 'your-google-verification-code', // Ganti dengan code dari Google Search Console
+    google: 'YP0Z9oaWwz6EHGuEwUgr49FSTxd_gc2qyBZcL-nD3bs',
   },
   
   // Additional Meta Tags
