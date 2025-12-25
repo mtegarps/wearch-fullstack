@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Edit, Trash2, X, ChevronDown, ChevronUp, Upload, Image as ImageIcon } from "lucide-react";
+import { Plus, Edit, Trash2, X, ChevronDown, ChevronUp, Upload, Image as ImageIcon, Save, BarChart3 } from "lucide-react";
 
 interface AboutService {
   id: number;
@@ -12,28 +12,81 @@ interface AboutService {
   order: number;
 }
 
+interface StatsSettings {
+  projectsCompleted: string;
+  projectsLabel: string;
+  yearsExperience: string;
+  yearsLabel: string;
+}
+
 export default function AboutServicesPage() {
   const [services, setServices] = useState<AboutService[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingService, setEditingService] = useState<AboutService | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
+  
+  // Stats settings
+  const [stats, setStats] = useState<StatsSettings>({
+    projectsCompleted: "50+",
+    projectsLabel: "projects completed",
+    yearsExperience: "7+",
+    yearsLabel: "years service",
+  });
+  const [savingStats, setSavingStats] = useState(false);
+  const [statsSaved, setStatsSaved] = useState(false);
 
   const fetchServices = async () => {
     try {
       const res = await fetch("/api/about-services");
       const data = await res.json();
-      setServices(data);
+      if (Array.isArray(data)) {
+        setServices(data);
+      }
     } catch (error) {
       console.error("Failed to fetch about services:", error);
-    } finally {
-      setLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const res = await fetch("/api/settings");
+      const data = await res.json();
+      setStats({
+        projectsCompleted: data.projectsCompleted || "50+",
+        projectsLabel: data.projectsLabel || "projects completed",
+        yearsExperience: data.yearsExperience || "7+",
+        yearsLabel: data.yearsLabel || "years service",
+      });
+    } catch (error) {
+      console.error("Failed to fetch settings:", error);
     }
   };
 
   useEffect(() => {
-    fetchServices();
+    const loadData = async () => {
+      await Promise.all([fetchServices(), fetchStats()]);
+      setLoading(false);
+    };
+    loadData();
   }, []);
+
+  const handleSaveStats = async () => {
+    setSavingStats(true);
+    try {
+      await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(stats),
+      });
+      setStatsSaved(true);
+      setTimeout(() => setStatsSaved(false), 3000);
+    } catch (error) {
+      console.error("Failed to save stats:", error);
+    } finally {
+      setSavingStats(false);
+    }
+  };
 
   const handleDelete = async (id: number) => {
     try {
@@ -107,11 +160,116 @@ export default function AboutServicesPage() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-light text-white">About Section Services</h1>
+          <h1 className="text-2xl font-light text-white">About Section</h1>
           <p className="text-white/40 text-sm mt-1">
-            Manage services shown in the "Our Services" section on landing page
+            Manage the "Our Services" section and statistics on landing page
           </p>
         </div>
+      </div>
+
+      {/* Statistics Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-[#242222] border border-white/5 rounded-xl p-6"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-white font-medium flex items-center gap-2">
+            <BarChart3 size={20} className="text-[#BBFF00]" />
+            Statistics
+          </h2>
+          {statsSaved && (
+            <motion.span
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="text-green-400 text-sm"
+            >
+              ✓ Saved!
+            </motion.span>
+          )}
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Projects Stats */}
+          <div className="space-y-4 p-4 bg-white/5 rounded-lg">
+            <p className="text-xs tracking-[0.15em] uppercase text-[#BBFF00]">Projects</p>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-white/40 mb-1 block">Number (e.g. 50+)</label>
+                <input
+                  type="text"
+                  value={stats.projectsCompleted}
+                  onChange={(e) => setStats({ ...stats, projectsCompleted: e.target.value })}
+                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-2.5 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50"
+                  placeholder="50+"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-white/40 mb-1 block">Label</label>
+                <input
+                  type="text"
+                  value={stats.projectsLabel}
+                  onChange={(e) => setStats({ ...stats, projectsLabel: e.target.value })}
+                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-2.5 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50"
+                  placeholder="projects completed"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Years Stats */}
+          <div className="space-y-4 p-4 bg-white/5 rounded-lg">
+            <p className="text-xs tracking-[0.15em] uppercase text-[#BBFF00]">Years</p>
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-white/40 mb-1 block">Number (e.g. 7+)</label>
+                <input
+                  type="text"
+                  value={stats.yearsExperience}
+                  onChange={(e) => setStats({ ...stats, yearsExperience: e.target.value })}
+                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-2.5 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50"
+                  placeholder="7+"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-white/40 mb-1 block">Label</label>
+                <input
+                  type="text"
+                  value={stats.yearsLabel}
+                  onChange={(e) => setStats({ ...stats, yearsLabel: e.target.value })}
+                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-2.5 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50"
+                  placeholder="years service"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end mt-6">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleSaveStats}
+            disabled={savingStats}
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#BBFF00] text-[#242222] text-sm font-medium rounded-lg disabled:opacity-50"
+          >
+            {savingStats ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="w-4 h-4 border-2 border-[#242222] border-t-transparent rounded-full"
+              />
+            ) : (
+              <Save size={16} />
+            )}
+            {savingStats ? "Saving..." : "Save Statistics"}
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {/* Services Section */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-white font-medium">Services List</h2>
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -119,9 +277,9 @@ export default function AboutServicesPage() {
             setEditingService(null);
             setIsModalOpen(true);
           }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-[#BBFF00] text-[#242222] text-sm font-medium rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 bg-[#BBFF00] text-[#242222] text-sm font-medium rounded-lg"
         >
-          <Plus size={18} />
+          <Plus size={16} />
           Add Service
         </motion.button>
       </div>

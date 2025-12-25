@@ -173,7 +173,7 @@ export default function AboutSection({ settings, isDark, aboutServices }: AboutS
                 lineHeight: "1",
               }}
             >
-              50+
+              {settings.projectsCompleted || "50+"}
             </p>
             <p
               className="text-sm md:text-base tracking-[0.3em]"
@@ -183,7 +183,7 @@ export default function AboutSection({ settings, isDark, aboutServices }: AboutS
                 color: "#FFFFFF",
               }}
             >
-              projects completed
+              {settings.projectsLabel || "projects completed"}
             </p>
           </div>
 
@@ -198,7 +198,7 @@ export default function AboutSection({ settings, isDark, aboutServices }: AboutS
                 lineHeight: "1",
               }}
             >
-              7+
+              {settings.yearsExperience || "7+"}
             </p>
             <p
               className="text-sm md:text-base tracking-[0.3em]"
@@ -208,7 +208,7 @@ export default function AboutSection({ settings, isDark, aboutServices }: AboutS
                 color: "#FFFFFF",
               }}
             >
-              years service
+              {settings.yearsLabel || "years service"}
             </p>
           </div>
         </motion.div>
