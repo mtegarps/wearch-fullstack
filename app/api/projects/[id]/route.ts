@@ -50,6 +50,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         client: body.client,
         description: body.description,
         status: body.status, // This should be "Published" or "Draft"
+        featuredOnHome: body.featuredOnHome ?? false,
+        homeOrder: body.homeOrder ?? 0,
       },
     });
 

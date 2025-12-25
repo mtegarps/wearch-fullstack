@@ -18,6 +18,9 @@ export interface Project {
   duration: string;
   client: string;
   description: string;
+  status?: string;
+  featuredOnHome?: boolean;
+  homeOrder?: number;
 }
 
 export interface TeamMember {
@@ -194,6 +197,8 @@ export interface Settings {
   maintenanceEndDate: string;
   maintenanceAllowAdmin: boolean;
   maintenanceBgImage: string;
+  // Homepage
+  homeProjectsCount?: number;
 }
 
 // Default/Fallback Settings

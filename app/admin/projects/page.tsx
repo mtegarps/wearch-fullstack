@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, Filter, Edit, Trash2, X, Image as ImageIcon } from "lucide-react";
+import { Plus, Search, Filter, Edit, Trash2, X, Image as ImageIcon, Star } from "lucide-react";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<any[]>([]);
@@ -133,8 +133,13 @@ export default function ProjectsPage() {
                   <button onClick={() => { setEditingProject(project); setIsModalOpen(true); }} className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-white hover:bg-white/30"><Edit size={14} /></button>
                   <button onClick={() => setDeleteConfirm(project.id)} className="w-8 h-8 bg-red-500/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-red-400 hover:bg-red-500/30"><Trash2 size={14} /></button>
                 </div>
-                <div className="absolute top-4 left-4">
+                <div className="absolute top-4 left-4 flex gap-2">
                   <span className={`px-3 py-1 text-xs rounded-full backdrop-blur-sm ${project.status === "Published" ? "bg-green-400/20 text-green-400" : "bg-yellow-400/20 text-yellow-400"}`}>{project.status}</span>
+                  {project.featuredOnHome && (
+                    <span className="px-3 py-1 text-xs rounded-full backdrop-blur-sm bg-[#BBFF00]/20 text-[#BBFF00] flex items-center gap-1">
+                      <Star size={10} className="fill-current" /> Featured
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="p-4">
@@ -194,6 +199,8 @@ function ProjectModal({ onClose, onSave, project }: { onClose: () => void; onSav
     description: project?.description || "",
     status: project?.status || "Draft",
     gallery: project?.gallery || [],
+    featuredOnHome: project?.featuredOnHome || false,
+    homeOrder: project?.homeOrder || 0,
   });
   const [activeTab, setActiveTab] = useState("basic");
   const [saving, setSaving] = useState(false);
@@ -215,6 +222,8 @@ function ProjectModal({ onClose, onSave, project }: { onClose: () => void; onSav
         description: project.description || "",
         status: project.status || "Draft",
         gallery: project.gallery || [],
+        featuredOnHome: project.featuredOnHome || false,
+        homeOrder: project.homeOrder || 0,
       });
     }
   }, [project]);
@@ -326,6 +335,38 @@ function ProjectModal({ onClose, onSave, project }: { onClose: () => void; onSav
                   </select>
                 </div>
               </div>
+              
+              {/* Featured on Homepage Toggle */}
+              <div 
+                onClick={() => setFormData({ ...formData, featuredOnHome: !formData.featuredOnHome })}
+                className={`flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition-all ${
+                  formData.featuredOnHome 
+                    ? 'bg-[#BBFF00]/10 border-[#BBFF00]/30' 
+                    : 'bg-white/5 border-white/10 hover:border-white/20'
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                  formData.featuredOnHome ? 'bg-[#BBFF00] text-[#242222]' : 'bg-white/10 text-white/40'
+                }`}>
+                  <Star size={20} className={formData.featuredOnHome ? 'fill-current' : ''} />
+                </div>
+                <div className="flex-1">
+                  <p className={`text-sm font-medium ${formData.featuredOnHome ? 'text-[#BBFF00]' : 'text-white'}`}>
+                    Featured on Homepage
+                  </p>
+                  <p className="text-xs text-white/40">
+                    {formData.featuredOnHome ? 'This project will appear on the homepage' : 'Click to feature this project on homepage'}
+                  </p>
+                </div>
+                <div className={`w-12 h-6 rounded-full p-1 transition-colors ${
+                  formData.featuredOnHome ? 'bg-[#BBFF00]' : 'bg-white/20'
+                }`}>
+                  <div className={`w-4 h-4 rounded-full bg-white transition-transform ${
+                    formData.featuredOnHome ? 'translate-x-6' : 'translate-x-0'
+                  }`} />
+                </div>
+              </div>
+              
               <div className="space-y-2">
                 <label className="text-xs tracking-[0.15em] uppercase text-white/40">Cover Image URL *</label>
                 <input type="url" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} placeholder="https://..."

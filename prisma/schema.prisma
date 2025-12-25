@@ -24,20 +24,22 @@ model User {
 
 // ==================== PROJECT ====================
 model Project {
-  id          Int              @id @default(autoincrement())
-  title       String
-  location    String
-  year        String
-  image       String?
-  category    String
-  area        String?
-  duration    String?
-  client      String?
-  description String?          @db.Text
-  status      String           @default("Draft") // Draft, Published
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  gallery     ProjectGallery[]
+  id             Int              @id @default(autoincrement())
+  title          String
+  location       String
+  year           String
+  image          String?
+  category       String
+  area           String?
+  duration       String?
+  client         String?
+  description    String?          @db.Text
+  status         String           @default("Draft") // Draft, Published
+  featuredOnHome Boolean          @default(false) // Show on homepage
+  homeOrder      Int              @default(0) // Order on homepage (lower = first)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  gallery        ProjectGallery[]
 }
 
 model ProjectGallery {
@@ -325,6 +327,9 @@ model Settings {
   maintenanceEndDate DateTime?
   maintenanceAllowAdmin Boolean @default(true)
   maintenanceBgImage String?
+  
+  // ========== HOMEPAGE PROJECTS ==========
+  homeProjectsCount Int     @default(3) // Max projects to show on homepage
   
   // ========== SEO ==========
   metaTitle         String?

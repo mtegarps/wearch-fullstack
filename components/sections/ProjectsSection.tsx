@@ -331,7 +331,7 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
 
           {/* Projects List */}
           <div>
-            {projects.slice(0, 3).map((project, idx) => (
+            {projects.map((project, idx) => (
               <ProjectItem
                 key={project.id}
                 project={project}

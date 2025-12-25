@@ -48,7 +48,7 @@ export default function WearchLanding() {
     const fetchData = async () => {
       try {
         const [projectsRes, teamRes, contactRes, settingsRes, aboutServicesRes] = await Promise.all([
-          fetch("/api/projects"),
+          fetch("/api/projects?homepage=true"), // Only fetch featured projects for homepage
           fetch("/api/team"),
           fetch("/api/contact"),
           fetch("/api/settings"),

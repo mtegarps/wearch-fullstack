@@ -1,6 +1,6 @@
 export * from "./HeroSection";
 export * from "./ProjectItem";
-export * from "./ProjectsSection";
+export { default as ProjectsSection } from "./ProjectsSection";
 export * from "./AboutSection";
 export * from "./ServicesSection";
 export * from "./ContactSection";

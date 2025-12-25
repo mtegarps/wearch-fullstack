@@ -5,12 +5,27 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const includeAll = searchParams.get("all") === "true";
+    const homepageOnly = searchParams.get("homepage") === "true";
 
-    const projects = await prisma.project.findMany({
-      where: includeAll ? {} : { status: "Published" },
-      include: { gallery: { orderBy: { order: "asc" } } },
-      orderBy: { createdAt: "desc" },
-    });
+    let projects;
+    
+    if (homepageOnly) {
+      // Fetch only featured projects for homepage, ordered by homeOrder
+      projects = await prisma.project.findMany({
+        where: { 
+          status: "Published",
+          featuredOnHome: true 
+        },
+        include: { gallery: { orderBy: { order: "asc" } } },
+        orderBy: { homeOrder: "asc" },
+      });
+    } else {
+      projects = await prisma.project.findMany({
+        where: includeAll ? {} : { status: "Published" },
+        include: { gallery: { orderBy: { order: "asc" } } },
+        orderBy: { createdAt: "desc" },
+      });
+    }
 
     // Transform to match frontend expected format
     const transformed = projects.map((p) => ({
@@ -41,6 +56,8 @@ export async function POST(request: NextRequest) {
         client: body.client || null,
         description: body.description || null,
         status: body.status || "Draft",
+        featuredOnHome: body.featuredOnHome || false,
+        homeOrder: body.homeOrder || 0,
         gallery: body.gallery?.length ? {
           create: body.gallery.map((g: any, idx: number) => ({
             url: g.url,
