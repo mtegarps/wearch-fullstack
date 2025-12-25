@@ -486,7 +486,6 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
                         className="group cursor-pointer"
                         onClick={() => {
                           onProjectClick(project.id);
-                          setShowAllModal(false);
                         }}
                       >
                         {/* Project Card */}
