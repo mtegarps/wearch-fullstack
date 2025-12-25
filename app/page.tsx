@@ -127,7 +127,7 @@ export default function WearchLanding() {
           <img 
             src="/favicon.ico" 
             alt="Logo" 
-            className="mx-auto mb-4 h-16 w-auto animate-pulse"
+            className="mx-auto mb-4 h-16 md:h-20 lg:h-24 w-auto animate-pulse"
           />
           <p className="text-white/40 text-sm">Loading...</p>
         </div>

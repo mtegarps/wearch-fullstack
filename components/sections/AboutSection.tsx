@@ -72,12 +72,10 @@ export default function AboutSection({ settings, isDark, aboutServices }: AboutS
           className="text-center mb-16"
         >
           <p
-            className="tracking-tight"
+            className="text-sm md:text-base lg:text-lg tracking-tight text-white/80"
             style={{
               fontFamily: settings.headingFont || "Sk-Modernist Bold, sans-serif",
-              color: "rgba(255, 255, 255, 0.8)",
               fontWeight: 700,
-              fontSize: `calc(16px * ${settings.fontSizeMultiplier || 1})`,
             }}
           >
             our services
