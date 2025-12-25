@@ -87,7 +87,16 @@ export default function AboutSection({ settings, isDark }: AboutSectionProps) {
               </div>
 
               {/* Title and Description */}
-              <div className="text-justify w-full" style={{ textAlignLast: "left" }}>
+              <div 
+                className="text-justify w-full"
+                lang="en"
+                style={{ 
+                  textWrap: "pretty",
+                  hyphens: "auto",
+                  wordBreak: "break-word",
+                  textAlignLast: "left"
+                }}
+              >
                 <span
                   className="text-base"
                   style={{
