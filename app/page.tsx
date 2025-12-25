@@ -34,6 +34,7 @@ export default function WearchLanding() {
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [contact, setContact] = useState<Contact | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
+  const [aboutServices, setAboutServices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const scaleProgress = useSpring(scrollYProgress, {
@@ -46,24 +47,27 @@ export default function WearchLanding() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [projectsRes, teamRes, contactRes, settingsRes] = await Promise.all([
+        const [projectsRes, teamRes, contactRes, settingsRes, aboutServicesRes] = await Promise.all([
           fetch("/api/projects"),
           fetch("/api/team"),
           fetch("/api/contact"),
           fetch("/api/settings"),
+          fetch("/api/about-services"),
         ]);
 
-        const [projectsData, teamData, contactData, settingsData] = await Promise.all([
+        const [projectsData, teamData, contactData, settingsData, aboutServicesData] = await Promise.all([
           projectsRes.json(),
           teamRes.json(),
           contactRes.json(),
           settingsRes.json(),
+          aboutServicesRes.ok ? aboutServicesRes.json() : [],
         ]);
 
         setProjects(projectsData);
         setTeam(teamData);
         setContact(contactData);
         setSettings(settingsData);
+        setAboutServices(aboutServicesData);
       } catch (error) {
         console.error("Failed to fetch data:", error);
         setContact(defaultContact);
@@ -179,7 +183,7 @@ export default function WearchLanding() {
       />
 
       {/* About Section */}
-      <AboutSection settings={displaySettings} isDark={isDark} />
+      <AboutSection settings={displaySettings} isDark={isDark} aboutServices={aboutServices} />
 
       {/* Footer */}
       <Footer settings={displaySettings} isDark={isDark} contact={displayContact} />

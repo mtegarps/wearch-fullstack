@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { LayoutDashboard, FolderKanban, Users, Briefcase, Phone, Settings, LogOut, Menu, X, ChevronRight, Bell, Search, FileText } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Users, Briefcase, Phone, Settings, LogOut, Menu, X, ChevronRight, Bell, Search, FileText, Grid2X2 } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -14,6 +14,7 @@ const menuItems = [
   { icon: FolderKanban, label: "Projects", href: "/admin/projects" },
   { icon: FileText, label: "Articles", href: "/admin/articles" },
   { icon: Users, label: "Team", href: "/admin/team" },
+  { icon: Grid2X2, label: "About Services", href: "/admin/about-services" },
   { icon: Briefcase, label: "Services", href: "/admin/services" },
   { icon: Phone, label: "Contact", href: "/admin/contact" },
   { icon: Settings, label: "Settings", href: "/admin/settings" },

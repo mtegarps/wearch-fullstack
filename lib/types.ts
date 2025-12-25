@@ -40,6 +40,13 @@ export interface Contact {
   email: string;
   phone: string;
   address: string;
+  fullAddress?: string;
+  workingHours?: string;
+  mapEmbed?: string;
+  instagram?: string;
+  linkedin?: string;
+  facebook?: string;
+  twitter?: string;
 }
 
 export interface Settings {

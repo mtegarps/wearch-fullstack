@@ -122,6 +122,17 @@ model Article {
   updatedAt   DateTime  @updatedAt
 }
 
+// ==================== ABOUT SERVICE (for About Section) ====================
+model AboutService {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?  @db.Text
+  iconUrl     String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 // ==================== SETTINGS ====================
 model Settings {
   id                Int     @id @default(autoincrement())

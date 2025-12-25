@@ -4,34 +4,55 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Settings } from "@/lib/types";
 
+interface AboutService {
+  id: number;
+  title: string;
+  description: string | null;
+  iconUrl: string | null;
+  order: number;
+}
+
 interface AboutSectionProps {
   settings: Settings;
   isDark: boolean;
+  aboutServices?: AboutService[];
 }
 
-export default function AboutSection({ settings, isDark }: AboutSectionProps) {
-  const services = [
-    {
-      iconPath: "/uploads/general/residence.png", 
-      title: "Residence",
-      description: "Design a house become a place to live, giving its own character to the owner. Create a space s that offer both aesthetic and function, offering sanctuaries where life can flourish."
-    },
-    {
-      iconPath: "/uploads/general/commercial.png", 
-      title: "Commercial",
-      description: "We focus on functionality and space optimization. We aim to build something with high business value while providing comfort for its users, while also providing a distinct identity for our clients' brands. Through this approach, we aim to create attractive, productive, and competitive commercial spaces."
-    },
-    {
-      iconPath: "/uploads/general/urbandesign.png", 
-      title: "Urban Design",
-      description: "Create a beneficial environment for the surrounding users. We envision all as living ecosystems where architecture, landscape, and urban flow come together in harmony, enriching the daily lives of their inhabitants."
-    },
-    {
-      iconPath: "/uploads/general/landscape.png", 
-      title: "Landscape",
-      description: "Not changing but shaping the nature into immersive experiences, blending art with ecology. Creating spaces where nature and humanity can coexist peacefully and meaningfully."
-    }
-  ];
+// Default services as fallback
+const defaultServices = [
+  {
+    id: 1,
+    iconUrl: "/uploads/general/residence.png", 
+    title: "Residence",
+    description: "Design a house become a place to live, giving its own character to the owner. Create a space s that offer both aesthetic and function, offering sanctuaries where life can flourish.",
+    order: 1
+  },
+  {
+    id: 2,
+    iconUrl: "/uploads/general/commercial.png", 
+    title: "Commercial",
+    description: "We focus on functionality and space optimization. We aim to build something with high business value while providing comfort for its users, while also providing a distinct identity for our clients' brands. Through this approach, we aim to create attractive, productive, and competitive commercial spaces.",
+    order: 2
+  },
+  {
+    id: 3,
+    iconUrl: "/uploads/general/urbandesign.png", 
+    title: "Urban Design",
+    description: "Create a beneficial environment for the surrounding users. We envision all as living ecosystems where architecture, landscape, and urban flow come together in harmony, enriching the daily lives of their inhabitants.",
+    order: 3
+  },
+  {
+    id: 4,
+    iconUrl: "/uploads/general/landscape.png", 
+    title: "Landscape",
+    description: "Not changing but shaping the nature into immersive experiences, blending art with ecology. Creating spaces where nature and humanity can coexist peacefully and meaningfully.",
+    order: 4
+  }
+];
+
+export default function AboutSection({ settings, isDark, aboutServices }: AboutSectionProps) {
+  // Use provided services or fallback to defaults
+  const services = aboutServices && aboutServices.length > 0 ? aboutServices : defaultServices;
 
   return (
     <section
@@ -77,7 +98,7 @@ export default function AboutSection({ settings, isDark }: AboutSectionProps) {
               {/* Icon */}
               <div className="mb-8 w-[50px] h-[50px] relative flex items-center justify-center">
                 <Image
-                  src={service.iconPath}
+                  src={service.iconUrl || "/uploads/general/residence.png"}
                   alt={`${service.title} icon`}
                   width={50}
                   height={50}
