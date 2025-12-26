@@ -283,16 +283,33 @@ function ProjectItem({ project, index, onProjectClick, settings }: ProjectItemPr
 export default function ProjectsSection({ settings, isDark, projects, onProjectClick }: ProjectsSectionProps) {
   const [showAllModal, setShowAllModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [allProjects, setAllProjects] = useState<Project[]>([]);
+  const [loadingAll, setLoadingAll] = useState(false);
+
+  // Fetch all published projects when modal opens
+  const handleOpenModal = async () => {
+    setShowAllModal(true);
+    setLoadingAll(true);
+    try {
+      const res = await fetch("/api/projects");
+      const data = await res.json();
+      setAllProjects(data);
+    } catch (error) {
+      console.error("Failed to fetch all projects:", error);
+    } finally {
+      setLoadingAll(false);
+    }
+  };
 
   if (settings.showProjectsSection === false) return null;
 
-  // Get unique categories
-  const categories = ["All", ...Array.from(new Set(projects.map(p => p.category)))];
+  // Get unique categories from ALL projects (for modal)
+  const categories = ["All", ...Array.from(new Set(allProjects.length > 0 ? allProjects.map(p => p.category) : projects.map(p => p.category)))];
 
-  // Filter projects by category
+  // Filter projects by category (use allProjects for modal)
   const filteredProjects = selectedCategory === "All" 
-    ? projects 
-    : projects.filter(p => p.category === selectedCategory);
+    ? allProjects.length > 0 ? allProjects : projects
+    : (allProjects.length > 0 ? allProjects : projects).filter(p => p.category === selectedCategory);
 
   return (
     <>
@@ -351,7 +368,7 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
             className="text-center mt-24 md:mt-32 px-6"
           >
             <motion.button
-              onClick={() => setShowAllModal(true)}
+              onClick={handleOpenModal}
               className="group inline-flex items-center gap-5 text-sm md:text-base tracking-[0.15em] uppercase"
               whileHover={{ gap: "32px" }}
               style={{
@@ -419,15 +436,15 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
                   className="mb-16 md:mb-20"
                 >
                   <h2
-                    className="text-5xl md:text-7xl lg:text-8xl text-white mb-8 tracking-tight"
+                    className="text-3xl md:text-4xl lg:text-5xl text-white mb-4 tracking-tight leading-tight"
                     style={{
                       fontFamily: "Sk-Modernist Bold, sans-serif",
                       fontWeight: 700,
                     }}
                   >
-                    All Projects
+                    our projects
                   </h2>
-                  <div className="w-24 h-1 bg-[#BBFF00]" />
+                  <div className="w-16 h-1 bg-[#BBFF00]" />
                 </motion.div>
 
                 {/* Category Filter */}
@@ -504,9 +521,9 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
 
                           {/* Category Badge */}
                           <div className="absolute top-4 left-4">
-                            <div className="bg-[#BBFF00] px-3 py-1.5">
+                            <div className="bg-[#BBFF00] px-3 py-1.5 flex items-center justify-center">
                               <span
-                                className="text-[9px] tracking-[0.2em] uppercase text-[#242222]"
+                                className="text-[9px] tracking-[0.2em] uppercase text-[#242222] text-center"
                                 style={{
                                   fontFamily: "Sk-Modernist Bold, sans-serif",
                                   fontWeight: 700,

@@ -200,7 +200,7 @@ export default function ProjectsPage() {
               </svg>
               <div className="flex flex-col">
                 <span className="text-lg font-bold tracking-tight leading-none text-[#242222]" style={{ fontFamily: "system-ui, -apple-system, sans-serif", fontWeight: 700 }}>
-                  Wearch Studio
+                  wearch Studio
                 </span>
                 <span className="text-[10px] tracking-[0.15em] uppercase text-gray-400 mt-0.5" style={{ fontFamily: "system-ui, -apple-system, sans-serif", fontWeight: 500 }}>
                   est 2018

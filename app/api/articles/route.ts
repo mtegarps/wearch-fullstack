@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         coverImage: data.coverImage,
         category: data.category || "Architecture",
         tags: data.tags,
-        author: data.author || "Wearch Studio",
+        author: data.author || "wearch Studio",
         authorImage: data.authorImage,
         readTime,
         featured: data.featured || false,

@@ -77,7 +77,7 @@ export function Footer({ isDark, contact, settings }: FooterProps) {
         </div>
 
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className={`pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 ${isDark ? "border-white/10" : "border-black/10"}`}>
-          <p className="text-xs opacity-40">© {new Date().getFullYear()} {settings?.siteName || "Wearch Studio"}. All rights reserved.</p>
+          <p className="text-xs opacity-40">© {new Date().getFullYear()} {settings?.siteName || "wearch Studio"}. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="text-xs opacity-40 hover:opacity-100 hover:text-[#BBFF00] transition-all">Privacy Policy</a>
             <a href="#" className="text-xs opacity-40 hover:opacity-100 hover:text-[#BBFF00] transition-all">Terms of Service</a>

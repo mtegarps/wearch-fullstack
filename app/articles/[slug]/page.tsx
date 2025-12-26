@@ -202,7 +202,7 @@ export default function ArticlePage({ params }: { params: Promise<{ slug: string
           </Link>
           <Link href="/" className="flex items-center gap-3">
             <span className="text-white font-semibold">
-              {settings?.siteName || "Wearch"}
+              {settings?.siteName || "wearch"}
             </span>
           </Link>
           <div className="flex items-center gap-2">

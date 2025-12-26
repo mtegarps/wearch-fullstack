@@ -203,7 +203,7 @@ export interface Settings {
 
 // Default/Fallback Settings
 export const defaultSettings: Settings = {
-  siteName: "Wearch Studio",
+  siteName: "wearch Studio",
   tagline: "Architecture Studio · Bandung",
   established: "2018",
   logoUrl: "",
@@ -288,7 +288,7 @@ export const defaultSettings: Settings = {
   contactCTA: "Whether it's a residential dream home, a commercial space, or an urban development—we're here to bring your vision to life with innovative design and precision.",
   contactButtonText: "Start Your Project",
   footerDescription: "Creating architectural excellence in Bandung and beyond. Transforming visions into timeless spaces.",
-  copyrightText: "© 2024 Wearch",
+  copyrightText: "© 2024 wearch",
   primaryColor: "#BBFF00",
   secondaryColor: "#c8ff00",
   accentColor: "#BBFF00",

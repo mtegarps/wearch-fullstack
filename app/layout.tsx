@@ -17,10 +17,10 @@ export const metadata: Metadata = {
   
   // Basic Meta Tags
   title: {
-    default: "Wearch - Jasa Arsitek Bandung, Bogor & Jabodetabek Terpercaya",
-    template: "%s | Wearch Arsitek"
+    default: "wearch - Jasa Arsitek Bandung, Bogor & Jabodetabek Terpercaya",
+    template: "%s | wearch Arsitek"
   },
-  description: "Wearch adalah jasa arsitek profesional di Bandung, Bogor, dan Jabodetabek. Kami menyediakan layanan desain rumah, renovasi, interior design, dan perencanaan bangunan dengan hasil maksimal dan harga terjangkau.",
+  description: "wearch adalah jasa arsitek profesional di Bandung, Bogor, dan Jabodetabek. Kami menyediakan layanan desain rumah, renovasi, interior design, dan perencanaan bangunan dengan hasil maksimal dan harga terjangkau.",
   keywords: [
     "wearch",
     "wearch studio",
@@ -38,9 +38,9 @@ export const metadata: Metadata = {
     "desain rumah minimalis",
     "kontraktor bandung"
   ],
-  authors: [{ name: "Wearch Studio", url: "https://wearch.id" }],
-  creator: "Wearch Studio",
-  publisher: "Wearch Studio",
+  authors: [{ name: "wearch Studio", url: "https://wearch.id" }],
+  creator: "wearch Studio",
+  publisher: "wearch Studio",
   
   // Icons
   icons: {
@@ -56,15 +56,15 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'id_ID',
     url: 'https://wearch.id',
-    siteName: 'Wearch',
-    title: 'Wearch - Jasa Arsitek Bandung, Bogor & Jabodetabek',
+    siteName: 'wearch',
+    title: 'wearch - Jasa Arsitek Bandung, Bogor & Jabodetabek',
     description: 'Jasa arsitek profesional di Bandung, Bogor, dan Jabodetabek. Desain rumah, renovasi, interior design dengan hasil berkualitas dan harga terjangkau.',
     images: [
       {
         url: 'https://res.cloudinary.com/dncwjb46j/image/upload/v1766319066/Logo_txeq7u.png',
         width: 885,
         height: 677,
-        alt: 'Wearch - Jasa Arsitek',
+        alt: 'wearch - Jasa Arsitek',
         type: 'image/png',
       }
     ],
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@wearch',
     creator: '@wearch',
-    title: 'Wearch - Jasa Arsitek Bandung, Bogor & Jabodetabek',
+    title: 'wearch - Jasa Arsitek Bandung, Bogor & Jabodetabek',
     description: 'Jasa arsitek profesional di Bandung, Bogor, dan Jabodetabek. Desain rumah, renovasi, interior design dengan hasil berkualitas dan harga terjangkau.',
     images: ['https://res.cloudinary.com/dncwjb46j/image/upload/v1766319066/Logo_txeq7u.png'],
   },
@@ -115,7 +115,7 @@ export const metadata: Metadata = {
   other: {
     'apple-mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-status-bar-style': 'black-translucent',
-    'apple-mobile-web-app-title': 'Wearch',
+    'apple-mobile-web-app-title': 'wearch',
   },
 };
 
@@ -137,8 +137,8 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "ProfessionalService",
-              "name": "Wearch",
-              "alternateName": "Wearch Studio",
+              "name": "wearch",
+              "alternateName": "wearch Studio",
               "url": "https://wearch.id",
               "logo": "https://res.cloudinary.com/dncwjb46j/image/upload/v1766319066/Logo_txeq7u.png",
               "description": "Jasa arsitek profesional di Bandung, Bogor, dan Jabodetabek",

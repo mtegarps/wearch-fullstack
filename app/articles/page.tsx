@@ -129,7 +129,7 @@ export default function ArticlesPage() {
           </Link>
           <Link href="/" className="flex items-center gap-3">
             <span className="text-white font-semibold">
-              {settings?.siteName || "Wearch"}
+              {settings?.siteName || "wearch"}
             </span>
           </Link>
           <div className="w-24" />

@@ -70,7 +70,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <AnimatePresence>
               {isSidebarOpen && (
                 <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex flex-col">
-                  <span className="text-white font-semibold tracking-tight">Wearch</span>
+                  <span className="text-white font-semibold tracking-tight">wearch</span>
                   <span className="text-[#BBFF00] text-xs tracking-wider">ADMIN</span>
                 </motion.div>
               )}
@@ -121,7 +121,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <div className="flex items-center gap-3">
                 <img src="/Logo.png" alt="Logo" className="h-10 w-auto object-contain" />
                 <div className="flex flex-col">
-                  <span className="text-white font-semibold tracking-tight">Wearch</span>
+                  <span className="text-white font-semibold tracking-tight">wearch</span>
                   <span className="text-[#BBFF00] text-xs tracking-wider">ADMIN</span>
                 </div>
               </div>

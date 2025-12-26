@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Wearch - Jasa Arsitek Bandung & Bogor',
-    short_name: 'Wearch',
+    name: 'wearch - Jasa Arsitek Bandung & Bogor',
+    short_name: 'wearch',
     description: 'Jasa arsitek profesional di Bandung, Bogor, dan Jabodetabek',
     start_url: '/',
     display: 'standalone',

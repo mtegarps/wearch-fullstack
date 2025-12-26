@@ -7,7 +7,7 @@ export async function GET() {
     if (!settings) {
       settings = await prisma.settings.create({
         data: {
-          siteName: "Wearch Studio",
+          siteName: "wearch Studio",
           tagline: "Architecture Studio · Bandung",
           established: "2018",
           heroTitle: "Creating spaces that inspire life",

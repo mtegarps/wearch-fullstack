@@ -56,7 +56,7 @@ export default function LoginPage() {
           <div className="inline-flex items-center gap-3 mb-4">
             <img src="/Logo.png" alt="Logo" className="h-12 w-auto object-contain" />
           </div>
-          <h1 className="text-2xl font-light text-white tracking-tight">Wearch <span className="text-[#BBFF00]">Admin</span></h1>
+          <h1 className="text-2xl font-light text-white tracking-tight">wearch <span className="text-[#BBFF00]">Admin</span></h1>
           <p className="text-white/40 text-sm mt-2">Sign in to manage your website</p>
         </motion.div>
 
