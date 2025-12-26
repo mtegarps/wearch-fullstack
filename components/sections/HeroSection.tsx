@@ -201,7 +201,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
               color: "#FFFFFF",
             }}
           >
-            {mainTitle}
+            {settings.heroTitle}
           </motion.h1>
 
           {/* Subtitle */}
@@ -209,7 +209,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6 }}
-            className={`mb-12 mt-12 max-w-2xl leading-relaxed ${
+            className={`mb-12 mt-12 max-w-full leading-relaxed ${
               settings.heroLayout === "center" ? "mx-auto" : ""
             } ${getSubtitleSizeClass()}`}
             style={{

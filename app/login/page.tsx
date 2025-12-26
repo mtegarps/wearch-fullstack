@@ -54,11 +54,7 @@ export default function LoginPage() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative w-full max-w-md">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center mb-10">
           <div className="inline-flex items-center gap-3 mb-4">
-            <svg width="50" height="50" viewBox="0 0 100 100" fill="none">
-              <path d="M20 20 L35 80 L20 80 Z" fill="#BBFF00" />
-              <path d="M42 20 L57 80 L42 80 Z" fill="#BBFF00" />
-              <path d="M64 20 L79 80 L64 80 Z" fill="#BBFF00" />
-            </svg>
+            <img src="/Logo.png" alt="Logo" className="h-12 w-auto object-contain" />
           </div>
           <h1 className="text-2xl font-light text-white tracking-tight">Wearch <span className="text-[#BBFF00]">Admin</span></h1>
           <p className="text-white/40 text-sm mt-2">Sign in to manage your website</p>

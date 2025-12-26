@@ -66,11 +66,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <motion.aside initial={false} animate={{ width: isSidebarOpen ? 280 : 80 }} transition={{ duration: 0.3 }} className="hidden lg:flex flex-col bg-[#242222] border-r border-white/5 fixed h-full z-40">
         <div className="p-6 border-b border-white/5">
           <div className="flex items-center gap-3">
-            <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
-              <path d="M20 20 L35 80 L20 80 Z" fill="#BBFF00" />
-              <path d="M42 20 L57 80 L42 80 Z" fill="#BBFF00" />
-              <path d="M64 20 L79 80 L64 80 Z" fill="#BBFF00" />
-            </svg>
+            <img src="/Logo.png" alt="Logo" className="h-10 w-auto object-contain" />
             <AnimatePresence>
               {isSidebarOpen && (
                 <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} className="flex flex-col">
@@ -123,11 +119,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <motion.aside initial={{ x: -280 }} animate={{ x: 0 }} exit={{ x: -280 }} transition={{ type: "spring", damping: 25 }} className="fixed inset-y-0 left-0 w-[280px] bg-[#242222] border-r border-white/5 z-50 lg:hidden">
             <div className="p-6 border-b border-white/5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
-                  <path d="M20 20 L35 80 L20 80 Z" fill="#BBFF00" />
-                  <path d="M42 20 L57 80 L42 80 Z" fill="#BBFF00" />
-                  <path d="M64 20 L79 80 L64 80 Z" fill="#BBFF00" />
-                </svg>
+                <img src="/Logo.png" alt="Logo" className="h-10 w-auto object-contain" />
                 <div className="flex flex-col">
                   <span className="text-white font-semibold tracking-tight">Wearch</span>
                   <span className="text-[#BBFF00] text-xs tracking-wider">ADMIN</span>
