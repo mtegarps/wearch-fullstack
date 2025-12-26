@@ -176,17 +176,16 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             transition={{ duration: 1, delay: 0.2 }}
             className="mt-4"
           >
-            <motion.p
-              className="text-xs md:text-sm tracking-[0.3em] uppercase mb-8"
-              style={{
-                fontFamily: "Sk-Modernist, sans-serif",
-                color: "rgba(255,255,255,0.4)",
-              }}
-              animate={{ opacity: [0.4, 0.6, 0.4] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              {settings.tagline}
-            </motion.p>
+          <motion.p
+            className="text-xs md:text-sm tracking-[0.3em] uppercase mb-8 text-white font-bold"
+            style={{
+              fontFamily: "Sk-Modernist, sans-serif",
+            }}
+            animate={{ opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            {settings.tagline}
+          </motion.p>
           </motion.div>
 
           {/* Title */}
