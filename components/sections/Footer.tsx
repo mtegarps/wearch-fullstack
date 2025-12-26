@@ -185,7 +185,7 @@ export default function Footer({ settings, isDark, contact }: FooterProps) {
         {/* Bottom Row - Copyright and Powered By */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between px-6 md:px-12 pb-6 md:pb-8 gap-2 md:gap-0">
           <div className="text-[11px] font-medium tracking-wide" style={{ color: "#2E2E2E" }}>
-            {settings.copyrightText || `copyright © ${new Date().getFullYear()} ${settings.siteName.toLowerCase()}`}
+            {settings.copyrightText || `COPYRIGHT © ${new Date().getFullYear()} ${settings.siteName.toLowerCase()}`}
           </div>
         <div
           className="text-[11px] font-medium tracking-wide"
