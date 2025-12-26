@@ -128,27 +128,13 @@ export default function ArticlesPage() {
             <span className="text-sm">Back to Home</span>
           </Link>
           <Link href="/" className="flex items-center gap-3">
-            {settings?.logoUrl ? (
-              <img
-                src={settings.logoUrl}
-                alt={settings.siteName}
-                style={{ width: 50, height: 50 }}
-                className="object-contain"
-              />
-            ) : (
-              <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
-                <path d="M20 20 L35 80 L20 80 Z" fill="#BBFF00" />
-                <path d="M42 20 L57 80 L42 80 Z" fill="#BBFF00" />
-                <path d="M64 20 L79 80 L64 80 Z" fill="#BBFF00" />
-              </svg>
-            )}
-            <span className="text-white font-semibold hidden sm:block">
+            <span className="text-white font-semibold">
               {settings?.siteName || "Wearch"}
             </span>
           </Link>
           <div className="w-24" />
-        </div>
-      </nav>
+          </div>
+          </nav>
 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-6 relative overflow-hidden">

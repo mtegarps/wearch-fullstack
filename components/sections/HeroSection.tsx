@@ -177,12 +177,13 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             className="mt-4"
           >
           <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
             className="text-xs md:text-sm tracking-[0.3em] uppercase mb-8 text-white font-bold"
             style={{
               fontFamily: "Sk-Modernist, sans-serif",
             }}
-            animate={{ opacity: [0.5, 0.8, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity }}
           >
             {settings.tagline}
           </motion.p>
@@ -193,7 +194,7 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.4 }}
-            className={`leading-tight mb-8 mt-24 tracking-tight ${getTitleSizeClass()}`}
+            className={`leading-tight mb-8 mt-24 tracking-tight max-w-5xl mx-auto ${getTitleSizeClass()}`}
             style={{
               fontFamily: "Sk-Modernist Bold, sans-serif",
               fontWeight: "700",
@@ -201,16 +202,6 @@ export default function HeroSection({ settings, isDark }: HeroSectionProps) {
             }}
           >
             {mainTitle}
-            <br />
-            <span
-              className="inline-block"
-              style={{ 
-                fontFamily: "Sk-Modernist Bold, sans-serif",
-                fontWeight: "700"
-              }}
-            >
-              {italicTitle}
-            </span>
           </motion.h1>
 
           {/* Subtitle */}

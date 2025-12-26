@@ -201,12 +201,7 @@ export default function ArticlePage({ params }: { params: Promise<{ slug: string
             <span className="text-sm hidden sm:block">Back to Articles</span>
           </Link>
           <Link href="/" className="flex items-center gap-3">
-            <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
-              <path d="M20 20 L35 80 L20 80 Z" fill="#BBFF00" />
-              <path d="M42 20 L57 80 L42 80 Z" fill="#BBFF00" />
-              <path d="M64 20 L79 80 L64 80 Z" fill="#BBFF00" />
-            </svg>
-            <span className="text-white font-semibold hidden sm:block">
+            <span className="text-white font-semibold">
               {settings?.siteName || "Wearch"}
             </span>
           </Link>
