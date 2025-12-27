@@ -8,9 +8,9 @@ INSERT INTO "User" ("email", "password", "name", "role") VALUES
 
 -- ==================== PROJECTS ====================
 INSERT INTO "Project" ("title", "location", "year", "image", "category", "area", "duration", "client", "description", "status") VALUES
-('Modern Villa', 'Dago', '2024', 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80', 'Residential', '450 m²', '8 Months', 'Private Client', 'A contemporary residential masterpiece that harmoniously blends indoor and outdoor living spaces.', 'Published'),
+('Modern Villa', 'Dago', '2024', 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80', 'Residence', '450 m²', '8 Months', 'Private Client', 'A contemporary residential masterpiece that harmoniously blends indoor and outdoor living spaces.', 'Published'),
 ('Creative Hub', 'Bandung', '2023', 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80', 'Commercial', '1200 m²', '14 Months', 'Tech Startup Inc', 'A dynamic workspace designed to inspire innovation and foster creative collaboration.', 'Published'),
-('Eco House', 'Lembang', '2024', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', 'Residential', '320 m²', '10 Months', 'Green Living Co', 'A sustainable home that demonstrates how eco-friendly design can enhance quality of life.', 'Published'),
+('Eco House', 'Lembang', '2024', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80', 'Residence', '320 m²', '10 Months', 'Green Living Co', 'A sustainable home that demonstrates how eco-friendly design can enhance quality of life.', 'Published'),
 ('Office Tower', 'Bandung', '2023', 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80', 'Commercial', '3500 m²', '18 Months', 'Corporate Group Ltd', 'A landmark commercial tower that redefines premium office space in the city center.', 'Draft');
 
 -- Project 1 Gallery (Modern Villa)
@@ -55,7 +55,7 @@ INSERT INTO "Service" ("title", "icon", "description", "order") VALUES
 
 -- Service Items
 INSERT INTO "ServiceItem" ("serviceId", "name", "order") VALUES
-(1, 'Residential Design', 1),
+(1, 'Residence Design', 1),
 (1, 'Commercial Spaces', 2),
 (1, 'Urban Planning', 3),
 (1, 'Conceptual Design', 4),

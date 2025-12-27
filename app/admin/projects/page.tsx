@@ -13,7 +13,7 @@ export default function ProjectsPage() {
   const [editingProject, setEditingProject] = useState<any>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
 
-  const categories = ["All", "Residential", "Commercial", "Urban Design", "Landscape Design"];
+  const categories = ["All", "Residence", "Commercial", "Urban Design", "Landscape"];
 
   const fetchProjects = async () => {
     try {
@@ -191,7 +191,7 @@ function ProjectModal({ onClose, onSave, project }: { onClose: () => void; onSav
     title: project?.title || "",
     location: project?.location || "",
     year: project?.year || new Date().getFullYear().toString(),
-    category: project?.category || "Residential",
+    category: project?.category || "Residence",
     image: project?.image || "",
     area: project?.area || "",
     duration: project?.duration || "",
@@ -214,7 +214,7 @@ function ProjectModal({ onClose, onSave, project }: { onClose: () => void; onSav
         title: project.title || "",
         location: project.location || "",
         year: project.year || new Date().getFullYear().toString(),
-        category: project.category || "Residential",
+        category: project.category || "Residence",
         image: project.image || "",
         area: project.area || "",
         duration: project.duration || "",
@@ -299,10 +299,10 @@ function ProjectModal({ onClose, onSave, project }: { onClose: () => void; onSav
                   <label className="text-xs tracking-[0.15em] uppercase text-white/40">Category *</label>
                   <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50">
-                    <option value="Residential">Residential</option>
+                    <option value="Residence">Residence</option>
                     <option value="Commercial">Commercial</option>
                     <option value="Urban Design">Urban Design</option>
-                    <option value="Landscape Design">Landscape Design</option>
+                    <option value="Landscape">Landscape</option>
                   </select>
                 </div>
                 <div className="space-y-2">

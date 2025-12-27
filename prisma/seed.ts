@@ -40,7 +40,7 @@ async function main() {
       location: "Dago",
       year: "2024",
       image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
-      category: "Residential",
+      category: "Residence",
       area: "450 m²",
       duration: "8 Months",
       client: "Private Client",
@@ -126,7 +126,7 @@ async function main() {
       location: "Lembang",
       year: "2024",
       image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80",
-      category: "Residential",
+      category: "Residence",
       area: "320 m²",
       duration: "10 Months",
       client: "Green Living Co",
@@ -252,7 +252,7 @@ async function main() {
       order: 1,
       items: {
         create: [
-          { name: "Residential Design", order: 1 },
+          { name: "Residence Design", order: 1 },
           { name: "Commercial Spaces", order: 2 },
           { name: "Urban Planning", order: 3 },
           { name: "Conceptual Design", order: 4 },
