@@ -30,7 +30,8 @@ export default function WearchLanding() {
   const cursorY = useMotionValue(0);
 
   // Data states
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]); // Featured projects for homepage display
+  const [allProjects, setAllProjects] = useState<Project[]>([]); // All projects for modal lookup
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [contact, setContact] = useState<Contact | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
@@ -47,16 +48,18 @@ export default function WearchLanding() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [projectsRes, teamRes, contactRes, settingsRes, aboutServicesRes] = await Promise.all([
-          fetch("/api/projects?homepage=true"), // Only fetch featured projects for homepage
+        const [projectsRes, allProjectsRes, teamRes, contactRes, settingsRes, aboutServicesRes] = await Promise.all([
+          fetch("/api/projects?homepage=true"), // Only fetch featured projects for homepage display
+          fetch("/api/projects"), // Fetch all published projects for modal lookup
           fetch("/api/team"),
           fetch("/api/contact"),
           fetch("/api/settings"),
           fetch("/api/about-services"),
         ]);
 
-        const [projectsData, teamData, contactData, settingsData, aboutServicesData] = await Promise.all([
+        const [projectsData, allProjectsData, teamData, contactData, settingsData, aboutServicesData] = await Promise.all([
           projectsRes.json(),
+          allProjectsRes.json(),
           teamRes.json(),
           contactRes.json(),
           settingsRes.json(),
@@ -64,6 +67,7 @@ export default function WearchLanding() {
         ]);
 
         setProjects(projectsData);
+        setAllProjects(allProjectsData);
         setTeam(teamData);
         setContact(contactData);
         setSettings(settingsData);
@@ -138,7 +142,8 @@ export default function WearchLanding() {
   const displaySettings = settings || defaultSettings;
   const displayContact = contact || defaultContact;
 
-  const selectedProjectData = projects.find((p) => p.id === selectedProject) || null;
+  // Look for selected project in allProjects (includes non-featured projects from "View All" modal)
+  const selectedProjectData = allProjects.find((p) => p.id === selectedProject) || null;
 
   return (
     <div

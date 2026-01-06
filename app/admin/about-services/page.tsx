@@ -540,7 +540,7 @@ function ServiceModal({ onClose, onSave, service }: ServiceModalProps) {
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="e.g. Residence"
+              placeholder="e.g. Residential"
               className="w-full bg-white/5 border border-white/10 text-white placeholder-white/20 px-4 py-3 text-sm rounded-lg focus:outline-none focus:border-[#BBFF00]/50"
               required
             />

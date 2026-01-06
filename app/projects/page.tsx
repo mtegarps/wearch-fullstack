@@ -26,7 +26,7 @@ interface Project {
 }
 
 // Fixed category order
-const CATEGORY_ORDER = ["All", "Residence", "Commercial", "Urban Design", "Landscape"];
+const CATEGORY_ORDER = ["All", "Residential", "Commercial", "Urban Design", "Landscape"];
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);

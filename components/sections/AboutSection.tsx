@@ -23,7 +23,7 @@ const defaultServices = [
   {
     id: 1,
     iconUrl: "/uploads/general/residence.png", 
-    title: "Residence",
+    title: "Residential",
     description: "Design a house become a place to live, giving its own character to the owner. Create a space s that offer both aesthetic and function, offering sanctuaries where life can flourish.",
     order: 1
   },
