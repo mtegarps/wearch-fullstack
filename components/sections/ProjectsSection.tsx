@@ -523,7 +523,7 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
                           <div className="absolute top-4 left-4">
                             <div className="bg-[#BBFF00] px-3 py-1.5 flex items-center justify-center">
                               <span
-                                className="text-[9px] tracking-[0.2em] uppercase text-[#242222] text-center"
+                                className="text-[9px] tracking-[0.2em] uppercase text-[#242222] text-center leading-none"
                                 style={{
                                   fontFamily: "Sk-Modernist Bold, sans-serif",
                                   fontWeight: 700,
