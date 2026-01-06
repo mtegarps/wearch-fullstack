@@ -521,7 +521,7 @@ export default function ProjectsSection({ settings, isDark, projects, onProjectC
 
                           {/* Category Badge */}
                           <div className="absolute top-4 left-4">
-                            <div className="bg-[#BBFF00] px-3 py-1.5 flex items-center justify-center">
+                            <div className="bg-[#BBFF00] px-3 pt-2 pb-1.5 flex items-center justify-center">
                               <span
                                 className="text-[9px] tracking-[0.2em] uppercase text-[#242222] text-center leading-none"
                                 style={{
